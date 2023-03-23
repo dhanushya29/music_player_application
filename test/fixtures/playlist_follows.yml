@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  playlist: one
+  user: one
+
+two:
+  playlist: two
+  user: two
