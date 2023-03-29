@@ -3,7 +3,17 @@ class SongsController < ApplicationController
 
   # GET /songs or /songs.json
   def index
-    @songs = Song.all
+    if params[:q].present?
+      @songs=Song.where("title LIKE?","%#{params[:q]}%")
+      if user_signed_in?
+        @users=User.all
+      end
+    else
+      @songs=Song.all
+      if user_signed_in?
+        @users=User.all 
+      end
+    end
   end
 
   # GET /songs/1 or /songs/1.json
@@ -13,6 +23,7 @@ class SongsController < ApplicationController
   # GET /songs/new
   def new
     @song = Song.new
+    @artist=params[:artist_id]
   end
 
   # GET /songs/1/edit
@@ -21,28 +32,30 @@ class SongsController < ApplicationController
 
   # POST /songs or /songs.json
   def create
-    @song = Song.new(song_params)
+        @artist = params[:artist_id]
+        @song = @artist.create_song(title: params[:song][:title],lyrics: params[:song][:lyrics],duration: params[:song][:duration])
+         
+        if @song.save
+          redirect_to songs_path
+        else
+           render 'new'
+        # else
+        #     @cart=current_user.cart
+        #     @product=Product.find(params[:product_id])
+        #     @product.update(req_quantity:(params[:product][:quantity]))
+        #     redirect_to cart_path(current_user)
 
-    respond_to do |format|
-      if @song.save
-        format.html { redirect_to song_url(@song), notice: "Song was successfully created." }
-        format.json { render :show, status: :created, location: @song }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @song.errors, status: :unprocessable_entity }
-      end
-    end
+         end
   end
 
   # PATCH/PUT /songs/1 or /songs/1.json
   def update
     respond_to do |format|
       if @song.update(song_params)
-        format.html { redirect_to song_url(@song), notice: "Song was successfully updated." }
+        format.html { redirect_to songs_path, notice: "Song was successfully updated." }
         format.json { render :show, status: :ok, location: @song }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @song.errors, status: :unprocessable_entity }
+        render 'new'
       end
     end
   end
@@ -52,7 +65,7 @@ class SongsController < ApplicationController
     @song.destroy
 
     respond_to do |format|
-      format.html { redirect_to songs_url, notice: "Song was successfully destroyed." }
+      format.html { redirect_to songs_path, notice: "Song was successfully destroyed." }
       format.json { head :no_content }
     end
   end

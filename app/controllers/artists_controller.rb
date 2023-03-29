@@ -8,6 +8,8 @@ class ArtistsController < ApplicationController
 
   # GET /artists/1 or /artists/1.json
   def show
+    # @albums=@artist.albums.all
+    # @artist = Artist.find(params[:id])
   end
 
   # GET /artists/new
@@ -22,7 +24,7 @@ class ArtistsController < ApplicationController
   # POST /artists or /artists.json
   def create
     @artist = Artist.new(artist_params)
-
+    
     respond_to do |format|
       if @artist.save
         format.html { redirect_to artist_url(@artist), notice: "Artist was successfully created." }

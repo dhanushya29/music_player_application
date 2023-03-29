@@ -1,19 +1,23 @@
-<p id="notice"><%= notice %></p>
+<div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @artist.name %>
-</p>
+<ul>
 
+<li><%= link_to 'Albums',artist_album_path(@artist.id) %></li> <!-- displaying the show page of every albums tried artist_albums_path(@artist) routing error-->
+
+<!-- <li><%#= link_to 'Songs',songs_path %></li> -->
+<li><%= link_to 'Profile',artist_path(@artist) %></li>
+</ul>
+
+<br>
+<h2><%= @artist.name %></h2>
 <p>
-  <strong>Image url:</strong>
   <%= @artist.image_url %>
-</p>
-
+ </p>
 <p>
-  <strong>Region:</strong>
   <%= @artist.region %>
 </p>
 
-<%= link_to 'Edit', edit_artist_path(@artist) %> |
-<%= link_to 'Back', artists_path %>
+
+<br>
+<!-- <%#= link_to 'Add new album',new_album_path %> -->
+</div>

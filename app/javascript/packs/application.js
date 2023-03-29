@@ -15,3 +15,11 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+// import "css/application";
+// import 'bootstrap/dist/js/bootstrap'
+// import 'bootstrap/dist/css/bootstrap'
+// require("stylesheets/application.scss")
+// import $ from 'jquery'
+// global.$= jQuery;
+
+import "bootstrap"
