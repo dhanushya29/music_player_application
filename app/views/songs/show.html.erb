@@ -1,24 +1,20 @@
-<p id="notice"><%= notice %></p>
+<%= render 'layouts/display' %>
 
-<p>
-  <strong>Title:</strong>
-  <%= @song.title %>
-</p>
+<div class="card ", style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)max-width: 300px;max-height:800px;margin: auto;text-align: center;font-family: arial;">
+  <!-- <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="margin-top:20px;">
+    <#% if @product.image.attached? %>
+        <p>
+        <%#= image_tag(@product.image, style:"width:600px;height:400px;border-radius:10px")%>
+        </p>
+    <%# end%>
+  </div> -->
+  <div class="card-body">
+    <h5 class="card-title"><strong><%= @song.title %></strong></h5>
+    <p class="card-text"><%= @song.duration %></p>
+    <p class="price",style= "color:grey;font-size:22px;"><strong>₹<%= @song.lyrics %></strong></p>
+    <%if user_signed_in?%>
+      <%= link_to 'Add to Playlist', insert_playlists_path(:user_id => current_user.id,:song_id=>song.id),:method => :post,class:"btn btn-success btn-sm",style:"border: none;outline: 0;padding: 12px;text-align: center;cursor: pointer;width: 50%;font-size: 18px;"%>
+   <%end%>
 
-<p>
-  <strong>Album:</strong>
-  <%= @song.album_id %>
-</p>
-
-<p>
-  <strong>Duration:</strong>
-  <%= @song.duration %>
-</p>
-
-<p>
-  <strong>Lyrics:</strong>
-  <%= @song.lyrics %>
-</p>
-
-<%= link_to 'Edit', edit_song_path(@song) %> |
-<%= link_to 'Back', songs_path %>
+  </div>
+</div>

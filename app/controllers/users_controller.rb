@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 		@user=User.find(params[:id])
 		@songs=Song.all
 		@albums=Album.all 
-		#@images=@user.image.all 
+		@images=@user.image
 	end
 
 	private

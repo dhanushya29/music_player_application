@@ -1,6 +1,6 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: %i[ show edit update destroy ]
-
+  #before_action :authenticate_artist!
   # GET /artists or /artists.json
   def index
     @artists = Artist.all
@@ -8,6 +8,7 @@ class ArtistsController < ApplicationController
 
   # GET /artists/1 or /artists/1.json
   def show
+    @image=@artist.image 
     # @albums=@artist.albums.all
     # @artist = Artist.find(params[:id])
   end
@@ -27,11 +28,9 @@ class ArtistsController < ApplicationController
     
     respond_to do |format|
       if @artist.save
-        format.html { redirect_to artist_url(@artist), notice: "Artist was successfully created." }
-        format.json { render :show, status: :created, location: @artist }
+        redirect_to root_path 
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @artist.errors, status: :unprocessable_entity }
+        render 'new'
       end
     end
   end

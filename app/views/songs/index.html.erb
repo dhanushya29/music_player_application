@@ -1,33 +1,106 @@
-<p id="notice"><%= notice %></p>
+<nav class="navbar navbar-expand-sm py-0 navbar-light bg-light">
+    <div class="navbar-brand" href="#">
+      <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTifDO2QG1FcKP6W508NmdSzSWB9MZAFYM0aA&usqp=CAU" alt="myStore" style="width: 70px;"></div>
+  <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-<h1>Songs</h1>
+            <li class="r4"><%= link_to'Home',root_path,class: "nav-link active" %></li>
+            <%if user_signed_in?%>
+              
+              <li><%= link_to'Albums',albums_path, class:"nav-link"%></li>
+              <li ><%= link_to'Songs',songs_path, class: "nav-link"%></li>
+              <li ><%= link_to'MyPlaylists',playlist_path(current_user), class: "nav-link"%></li>
+              <li ><%= link_to'Profile',user_path(current_user), class: "nav-link"%></li>
+              <li><%= link_to 'Sign Out',destroy_user_session_path,method: :delete ,class: "nav-link"%></li>
+            <%elsif artist_signed_in?%>
+              <li ><%= link_to'Albums',albums_path(current_artist), class: "nav-link"%></li>
+              <li ><%= link_to'Profile',artist_path(current_artist), class: "nav-link"%></li>
+              <li><%= link_to 'Sign Out',destroy_artist_session_path,method: :delete ,class: "nav-link"%></li>
+            <%else%>
+                  <li><%= link_to 'Sign In',new_user_session_path ,class: "nav-link"%></li>
+                  <li><%= link_to 'Sign In As Artist',new_artist_session_path ,class: "nav-link"%></li>
+            <%end%>
+        </ul>
+      </div>
+      <%if user_signed_in?%>
+    <%= form_tag root_path,method: :get do%>
+    <%= text_field_tag :q,params[:q],placeholder: "Search albums",style: "border-radius:10px;width:400px;margin-left:15px;" %>
+    <%= submit_tag "Search",name: nil,class:"btn btn-success btn-sm",style: "margin-left:5px;margin-right:15px;height:25px;" %>
+    <%end%>
+    <%end%>
+    </div>
+  </nav>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Album</th>
-      <th>Duration</th>
-      <th>Lyrics</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @songs.each do |song| %>
+  <%if user_signed_in?%>
+
+
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= song.title %></td>
-        <td><%= song.album_id %></td>
-        <td><%= song.duration %></td>
-        <td><%= song.lyrics %></td>
-        <td><%= link_to 'Show', song %></td>
-        <td><%= link_to 'Edit', edit_song_path(song) %></td>
-        <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <!-- <th scope="col">   </th> -->
+        <th scope="col">Title</th>
+        <!-- <th scope="col">Artist</th> -->
+        <th scope="col">Duration</th>
+        <th scope="col">Lyrics</th>
+        <th scope="col">   </th>
+        <!-- <th colspan="3"></th> -->
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @songs.each do |song| %>
+        <tr>
+          <td><%= song.title %></td>
+          <!-- <td><%#= album.artist_id %></td> -->
+          <td><%= song.duration %></td>
+          <td><%= song.lyrics %></td>
+          <td><%= link_to 'Show', song_path(song),class:"btn btn-primary btn-sm" %></td>
+          
+          <td><%= link_to 'Add to Playlist',insert_playlists_path(:user_id=>current_user.id,:song_id=>song.id),:method=>:post,id: "my-button",class:"btn btn-success btn-sm",style:"width:100px;" %></td></tr>
+          <% end %>
+    </tbody>
+  </table>
+     <%= link_to 'Go to Playlist',playlist_path(current_user),class:"btn btn-success",style:"width:450px;margin-left:400px;"%>
+  <br>
+  <%else%>
 
-<%= link_to 'New Song', new_song_path %>
+   <table class="table",style="font-family:serif;">
+    <thead>
+      <tr>
+        <!-- <th scope="col">  </th> -->
+        <th scope="col">Title</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Lyrics</th>
+        <th scope="col">  </th>
+        <th scope="col">  </th>
+        <th scope="col">  </th>
+       </tr>
+    </thead>
+    <tbody>
+      <% @album.songs.each do |s| %>
+      <%# album.songs.each do |s| %>
+      <tr>
+        <td><%= s.title %></td>
+          <!-- <td><%#= album.artist_id %></td> -->
+        <td><%= s.duration %></td>
+        <td><%= s.lyrics %></td>
+
+        <td><%= link_to 'Show',song_path(s),class:"btn btn-primary btn-sm"%></td>
+        <td><%= link_to 'Update',edit_song_path(s),class:"btn btn-primary btn-sm"%></td>
+        <td><%= button_to 'Remove',song_path(s),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm"%></td>
+      </tr>
+      <%end%>
+    </tbody>
+  </table>
+  <%#end%>
+  <%= link_to "Add new song", new_song_path(:artist_id=>params[:artist_id],:album_id=>params[:album_id]),class:"btn btn-success",style:"margin-left:1300px;width:300px" %>
+  <%end%>
+  <% if flash %>
+    <p class="notice text-success mt-4"><%= notice %></p>
+<% end %>

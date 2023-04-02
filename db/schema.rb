@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_24_070540) do
+ActiveRecord::Schema.define(version: 2023_04_02_065639) do
 
   create_table "albums", force: :cascade do |t|
     t.string "title"
@@ -21,12 +21,24 @@ ActiveRecord::Schema.define(version: 2023_03_24_070540) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "albums_songs", id: false, force: :cascade do |t|
+    t.integer "album_id", null: false
+    t.integer "song_id", null: false
+  end
+
   create_table "artists", force: :cascade do |t|
     t.string "name"
     t.string "image_url"
     t.string "region"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_artists_on_email"
+    t.index ["reset_password_token"], name: "index_artists_on_reset_password_token"
   end
 
   create_table "images", force: :cascade do |t|
@@ -47,17 +59,17 @@ ActiveRecord::Schema.define(version: 2023_03_24_070540) do
     t.index ["user_id"], name: "index_playlist_follows_on_user_id"
   end
 
-  create_table "playlist_song", id: false, force: :cascade do |t|
-    t.integer "playlist_id", null: false
-    t.integer "song_id", null: false
-  end
-
   create_table "playlists", force: :cascade do |t|
     t.bigint "user_id"
     t.string "title"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "playlists_songs", id: false, force: :cascade do |t|
+    t.integer "playlist_id", null: false
+    t.integer "song_id", null: false
   end
 
   create_table "songs", force: :cascade do |t|
@@ -67,6 +79,7 @@ ActiveRecord::Schema.define(version: 2023_03_24_070540) do
     t.text "lyrics"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "artist_id"
   end
 
   create_table "users", force: :cascade do |t|

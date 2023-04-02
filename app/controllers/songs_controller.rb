@@ -5,13 +5,13 @@ class SongsController < ApplicationController
   def index
     if params[:q].present?
       @songs=Song.where("title LIKE?","%#{params[:q]}%")
-      if user_signed_in?
-        @users=User.all
+      if artist_signed_in?
+        @artists=Artist.all
       end
     else
       @songs=Song.all
-      if user_signed_in?
-        @users=User.all 
+      if artist_signed_in?
+        @artists=Artist.all 
       end
     end
   end
@@ -23,7 +23,7 @@ class SongsController < ApplicationController
   # GET /songs/new
   def new
     @song = Song.new
-    @artist=params[:artist_id]
+    @album=params[:album_id]
   end
 
   # GET /songs/1/edit
@@ -32,20 +32,19 @@ class SongsController < ApplicationController
 
   # POST /songs or /songs.json
   def create
-        @artist = params[:artist_id]
-        @song = @artist.create_song(title: params[:song][:title],lyrics: params[:song][:lyrics],duration: params[:song][:duration])
-         
-        if @song.save
-          redirect_to songs_path
-        else
-           render 'new'
-        # else
-        #     @cart=current_user.cart
-        #     @product=Product.find(params[:product_id])
-        #     @product.update(req_quantity:(params[:product][:quantity]))
-        #     redirect_to cart_path(current_user)
-
-         end
+        if artist_signed_in?
+          @artist=current_artist
+          @song=@artist.songs.create(title: params[:song][:title],duration: params[:song][:duration],lyrics: params[:song][:lyrics])
+          if @song.save
+            redirect_to songs_path
+          else 
+            render 'new'
+          end 
+        else 
+          @playlist=current_user.playlist
+          @song=Song.find(params[:song_id])
+          redirect_to playlist_path(current_user)
+        end 
   end
 
   # PATCH/PUT /songs/1 or /songs/1.json

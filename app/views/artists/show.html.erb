@@ -1,23 +1,42 @@
-<div>
+<%= render 'layouts/display' %>
+<div class="p-4 shadow-4 rounded-3" style="background-color: white;font-family:serif;">
+  
+  <h2><%= @artist.name %></h2>
+  <p>
+    <%= @artist.region %>
+  </p>
 
-<ul>
+  <hr class="my-4" />
 
-<li><%= link_to 'Albums',artist_album_path(@artist.id) %></li> <!-- displaying the show page of every albums tried artist_albums_path(@artist) routing error-->
+  <p>
+    <%= @artist.email %>
+  </p>
 
-<!-- <li><%#= link_to 'Songs',songs_path %></li> -->
-<li><%= link_to 'Profile',artist_path(@artist) %></li>
-</ul>
+  <p>
+    <%= @artist.image_url %>
+  </p>
 
-<br>
-<h2><%= @artist.name %></h2>
-<p>
-  <%= @artist.image_url %>
- </p>
-<p>
-  <%= @artist.region %>
-</p>
-
-
-<br>
-<!-- <%#= link_to 'Add new album',new_album_path %> -->
+<!-- <#% if @artist.image_url.present? %>
+<strong>Image:</strong>
+  <#% @images.each do |image| %>
+  <div class="d-flex flex-row col-3">
+  <p>
+  
+  <%#= image.image_url %>
+  <%#= button_to  'Remove', image_path(image),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } ,class:"btn btn-danger btn-sm",style:"margin-left:80px"%>
+  </p>  
+  </div>
+  <%#end%>
+  
+  <%#= link_to  'Add new image', new_image_path,class:"btn btn-primary btn-sm"%>
+<%#else%>
+  <%#= link_to  'Add image', new_image_path,class:"btn btn-primary btn-sm"%>
+<%#end%>
+ <%#= link_to  'Logout',destroy_artist_session_path,
+                  method: :delete,class:"btn btn-danger btn-sm"%>-->
+  <% if alert %>
+    <p class="alert alert-danger mt-4"><%= alert %></p>
+  <% end %> 
 </div>

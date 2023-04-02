@@ -1,0 +1,7 @@
+<div style="width:50%;margin-left:200px;margin-top:50px">
+	<%= form_with model: @image,url: images_path,local: true do |form|%>
+	<div class="field form-group">
+		<%= form.text_area :image_url,class:"form-control",placeholder:"Image_Url"%> <br> 
+	</div>
+	<% end %>
+</div>

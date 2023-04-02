@@ -4,35 +4,37 @@ class PlaylistsController < ApplicationController
   # GET /playlists or /playlists.json
   def index
     @playlists = Playlist.all
+    @users=User.all
   end
 
   # GET /playlists/1 or /playlists/1.json
   def show
-    # @user =User.find(params[:id])
+    @user =current_user
     # if @user.playlist.present?
     #   @playlist=@user.playlist
     #   @playlist.save
     # end
+    @song=Song.all
   end
 
   # GET /playlists/new
   def new
     @playlist = Playlist.new
-    # @user=User.find(params[:user_id])
+    @user=params[:user_id]
   end
 
    def insert
         @user=User.find(params[:user_id])
         @song=Song.find(params[:song_id])
-        if @user.playlist.present?
-            if @user.playlist.songs.include?(@song)
+        if @user.playlists.present?
+            if @user.playlists.songs.include?(@song)
                 flash[:notice] = "Already added"
             else
                 @user.playlist.songs << @song
             end
             
         else
-            @playlist=@user.create_playlist(user_id: params[:user_id])
+            @playlist=@user.playlists.create(user_id: params[:user_id])
             @user.playlist.songs << @song
         end
         flash[:notice] = "#{@song.name} added to playlist"
@@ -47,7 +49,8 @@ class PlaylistsController < ApplicationController
   # POST /playlists or /playlists.json
   def create
     @playlist = Playlist.new(playlist_params)
-    @playlist.user = User.first 
+    @user=current_user
+    @playlist.user = @user 
     respond_to do |format|
       if @playlist.save
         format.html { redirect_to playlist_url(@playlist), notice: "Playlist was successfully created." }
@@ -75,14 +78,15 @@ class PlaylistsController < ApplicationController
   # DELETE /playlists/1 or /playlists/1.json
   def destroy
     @playlist.destroy
-    # @user = User.find(params[:id])
-    # @playlist=Playlist.find(params[:playlist_id])
+    redirect_to playlists_path
+    # @user = current_user
+    # @playlist=@user.playlists.where(:playlist_id=>@playlist.id)
     # @song=@playlist.songs.find(params[:song_id])
-    # @playlist.songs.delete(@song)
-    redirect_to playlist_path(current_user)
+    # @user.playlists.delete(params[:playlist_id])
+    # redirect_to playlist_path(current_user)
   end
 
-  private
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist
       @playlist = Playlist.find(params[:id])

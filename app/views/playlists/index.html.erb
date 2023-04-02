@@ -1,31 +1,36 @@
-<p id="notice"><%= notice %></p>
+<%= render 'layouts/display' %>
 
-<h1>Playlists</h1>
+<%if user_signed_in?%>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @playlists.each do |playlist| %>
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= playlist.user_id %></td>
+        <!-- <th scope="col">   </th> -->
+        <th scope="col">Title</th>
+        <!-- <th scope="col">Artist</th> -->
+        <th scope="col">Description</th>
+        <th scope="col">   </th>
+        <!-- <th colspan="3"></th> -->
+      </tr>
+    </thead>
+
+    <tbody>
+      <% current_user.playlists.each do |playlist| %>
+      <tr>
         <td><%= playlist.title %></td>
         <td><%= playlist.description %></td>
-        <td><%= link_to 'Show', playlist %></td>
-        <td><%= link_to 'Edit', edit_playlist_path(playlist) %></td>
-        <td><%= link_to 'Destroy', playlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+        <td><%= link_to 'Show',playlist_path(playlist),class:"btn btn-primary btn-sm"%></td>
+        <td><%= link_to 'Update',edit_playlist_path(playlist),class:"btn btn-primary btn-sm"%></td>
+        <td><%= button_to 'Remove',playlist_path(playlist),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm"%></td>
       </tr>
+      <% end %>
+    </tbody>
+  </table>
+     <%= link_to 'Create new Playlist',new_playlist_path(:user_id => params[:id]),class:"btn btn-success",style:"width:450px;margin-left:400px;"%>
+  <br>
+  <% end %>
+  <% if flash %>
+    <p class="notice text-success mt-4"><%=notice %></p>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Playlist', new_playlist_path %>

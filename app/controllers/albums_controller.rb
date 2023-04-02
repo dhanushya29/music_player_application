@@ -3,14 +3,23 @@ class AlbumsController < ApplicationController
   
   # GET /albums or /albums.json
   def index
+      #@albums=Album.all 
+      if params[:q].present?
+        @albums=Album.where("title LIKE?","%#{params[:q]}%")
+        if artist_signed_in?
+          @artists=Artist.all 
+        end 
+      else
       @albums=Album.all 
-      # @artists=Artist.all
+      if artist_signed_in?
+        @artists=Artist.all 
+      end 
+    end 
   end
 
   # GET /albums/1 or /albums/1.json
   #showing artist's album
   def show
-    @artist=Artist.find(params[:artist_id])
     @songs = @album.songs
    # @artist=params[:artist][:artist_id]
   end
@@ -18,7 +27,7 @@ class AlbumsController < ApplicationController
   # GET /albums/new
   def new
     @album = Album.new
-    # @artist=params[:artist_id] #undefined method error
+    @artist=params[:artist_id] #undefined method error
   end
   
 
@@ -47,21 +56,23 @@ class AlbumsController < ApplicationController
     # @artist = Artist.find(params[:artist_id]) #since not using devise cant use current undefined local variable #now showing record not found
     # @album.=@artist.albums.create(title: params[:album][:title],description: params[:album][:description],language: params[:album][:language])
     
-    @album = Album.new(album_params)
-    @album.artist = Artist.find(params[:id])
-
-
-
-    respond_to do |format|
-      if @album.save
-        format.html { redirect_to albums_path notice: "Album was successfully created." }
-        format.json { render :show, status: :created, location: @album }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @album.errors, status: :unprocessable_entity }
-      end
+    if artist_signed_in?
+      @artist=current_artist
+      @album=@artist.albums.create(title: params[:album][:title],description: params[:album][:description],language: params[:album][:language])
+      if @album.save 
+        redirect_to albums_path
+      else 
+        render 'new'
+      end 
+    else 
+      @playlist=current_user.playlist
+      @album=Album.find(params[:album_id])
+      redirect_to playlist_path(current_user)
     end
-  end
+  end 
+
+
+    
 
   # PATCH/PUT /albums/1 or /albums/1.json
   def update
@@ -85,7 +96,8 @@ class AlbumsController < ApplicationController
     def set_album
       @album = Album.find(params[:id])
     end
-
+    
+    private
     # Only allow a list of trusted parameters through.
     def album_params
       params.require(:album).permit(:title, :artist_id, :description, :language)

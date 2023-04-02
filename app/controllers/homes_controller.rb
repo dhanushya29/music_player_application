@@ -1,5 +1,5 @@
 class HomesController < ApplicationController
 	def index
-		@artists=Artist.all 
+		@albums=Album.all 
 	end 
 end

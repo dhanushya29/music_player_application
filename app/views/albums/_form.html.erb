@@ -31,6 +31,14 @@
     <%= form.text_field :language %>
   </div>
 
+  <div class="field">
+    <!-- <%#= form.label :image_url %> -->
+    <%= form.fields_for :image do |image| %>
+    <%= image_form.label :image_url %>
+    <%= image_form.text_field :image_url %>
+    <% end %>
+    <% end %>
+  </div> 
   <div class="actions">
     <%= form.submit %>
   </div>

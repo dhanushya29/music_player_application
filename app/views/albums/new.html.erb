@@ -1,5 +1,36 @@
-<h1>New Album</h1>
+<%= render 'layouts/display' %>
+<br>
 
-<%= render 'form', album: @album %>
+<% if @album.errors.any? %>
+  <div id="error_explanation",style="font-family:serif;">
+    <ul>
+      <% @album.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 
-<%= link_to 'Back', albums_path %>
+<div  style="width:50%; margin-left:200px;margin-top:50px">
+    
+    <%= form_with model: @album, url: albums_path ,local: true do |form| %>
+      <div class="field form-group">
+        <%= form.text_field :title,class:"form-control",placeholder:"Title"%><br>
+      </div>
+
+      <div>
+        <%= form.text_field :description,class:"form-control",placeholder:"Description" %><br>
+      </div>
+
+      <div>
+        <%= form.text_field :language,class:"form-control",placeholder:"Language" %><br>
+      </div>
+
+      <%= hidden_field_tag :artist_id, @artist %>
+     
+      <div>
+        <%= form.submit :Submit,style:"border: none;border-radius:5px;outline: 0;padding: 12px;color: white;background-color: #000;text-align: center;cursor: pointer;width: 50%;font-size: 15px;margin-left:150px;margin-top:30px" %>
+      </div>
+    <% end %>
+</div>
+</div>

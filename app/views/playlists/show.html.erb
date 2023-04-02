@@ -1,19 +1,94 @@
-<p id="notice"><%= notice %></p>
+<%= render 'layouts/display' %>
 
-<p>
-  <strong>User:</strong>
-  <%= @playlist.user_id %>
-</p>
+<div class="card ", style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)max-width: 300px;max-height:800px;margin: auto;text-align: center;font-family: arial;">
+  <div class="card-body">
+    <h5 class="card-title"><strong><%= @playlist.title %></strong></h5>
+    <p class="card-text"><%= @playlist.description %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @playlist.title %>
-</p>
+    <!-- <%#= render 'albums/songshow' %> -->
 
-<p>
-  <strong>Description:</strong>
-  <%= @playlist.description %>
-</p>
-
-<%= link_to 'Edit', edit_playlist_path(@playlist) %> |
-<%= link_to 'Back', playlists_path %>
+    <h3 style="font-family:serif;text-align:center;margin-top:40px;">Playlist Details</h3>
+<div style="margin-top:20px">
+  <% if alert %>
+    <p class="alert alert-danger"><%= alert %></p>
+  <% end %>
+  <% if @playlist.songs.present?%>
+    <% @playlist.songs.each do |song| %>
+      <section style="background-color: #eee;">
+        <div class="container py-1">
+          <div class="row justify-content-center mb-3">
+            <div class="col-md-12 col-xl-10">
+              <div class="card shadow-0 border rounded-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                      <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                        <a href="#!">
+                          <div class="hover-overlay">
+                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-6">
+                      <h5><strong><%= song.title %></strong></h5>
+                      <div class="d-flex flex-row">
+                        <div class="text mb-1 me-2">
+                          <div class="fa fa-star"></div>
+                          <div class="fa fa-star"></div>
+                          <div class="fa fa-star"></div>
+                          <div class="fa fa-star"></div>
+                        </div>
+                      </div>
+                      <p class="text-truncate mb-4 mb-md-0">
+                          <%= song.duration %>
+                      </p>
+                      <p>Artist:
+                          <%= song.artist.name %>
+                      </p>
+                      
+                      <div class="d-flex flex-row gap-2 col-6">
+                            <%= link_to 'Show', song_path(song), class:"btn btn-primary mt-2" %>
+                            <%= button_to  'remove', playlist_path(:id => current_user.id,:song_id => song.id ,:playlist_id => @playlist.id),
+                                    method: :delete, data: { confirm: 'Are you sure?' } ,class:"btn btn-danger  mt-2"%>   
+                        </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>   
+      </section>
+    <%end%>
+  
+  <%else%>
+    <div class="container-fluid  mt-100">
+            <div class="row">
+            
+              <div class="col-md-12">
+              
+                  <div class="card">
+                <div class="card-header">
+                </div>
+                <div class="card-body cart">
+                    <div class="col-sm-12 empty-cart-cls text-center">
+                      <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2?v=v2" width="130" height="130" class="img-fluid mb-4 mr-3">
+                      <h3><strong>Your Playlist is Empty</strong></h3>
+                      <h4>add something</h4>
+                      <%= link_to 'Add to playlist',root_path%>              
+                    </div>
+                </div>
+            </div>
+    </div>
+  
+  <%end%>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
