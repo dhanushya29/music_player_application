@@ -8,34 +8,25 @@
 
   <hr class="my-4" />
 
-  <p>
-    <%= @artist.email %>
-  </p>
+  
 
   <p>
-    <%= @artist.image_url %>
+    <%= image_tag @artist.image_url.to_s ,alt:'image' ,:size => "100x100" %>
   </p>
 
-<!-- <#% if @artist.image_url.present? %>
+ <!-- <%# if @artist.image_url.present? %>
 <strong>Image:</strong>
-  <#% @images.each do |image| %>
   <div class="d-flex flex-row col-3">
   <p>
   
-  <%#= image.image_url %>
-  <%#= button_to  'Remove', image_path(image),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } ,class:"btn btn-danger btn-sm",style:"margin-left:80px"%>
+  <%#= image_tag @artist.image_url.to_s ,alt:'image' ,:size => "100x100" %>
   </p>  
   </div>
-  <%#end%>
   
   <%#= link_to  'Add new image', new_image_path,class:"btn btn-primary btn-sm"%>
 <%#else%>
   <%#= link_to  'Add image', new_image_path,class:"btn btn-primary btn-sm"%>
-<%#end%>
- <%#= link_to  'Logout',destroy_artist_session_path,
-                  method: :delete,class:"btn btn-danger btn-sm"%>-->
+<%#end%> -->
   <% if alert %>
     <p class="alert alert-danger mt-4"><%= alert %></p>
   <% end %> 

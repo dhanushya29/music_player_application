@@ -1,42 +1,4 @@
-<nav class="navbar navbar-expand-sm py-0 navbar-light bg-light">
-    <div class="navbar-brand" href="#">
-      <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTifDO2QG1FcKP6W508NmdSzSWB9MZAFYM0aA&usqp=CAU" alt="myStore" style="width: 70px;"></div>
-  <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-            <li class="r4"><%= link_to'Home',root_path,class: "nav-link active" %></li>
-            <%if user_signed_in?%>
-              
-              <li><%= link_to'Albums',albums_path, class:"nav-link"%></li>
-              <li ><%= link_to'Songs',songs_path, class: "nav-link"%></li>
-              <li ><%= link_to'MyPlaylists',playlist_path(current_user), class: "nav-link"%></li>
-              <li ><%= link_to'Profile',user_path(current_user), class: "nav-link"%></li>
-              <li><%= link_to 'Sign Out',destroy_user_session_path,method: :delete ,class: "nav-link"%></li>
-            <%elsif artist_signed_in?%>
-              <li ><%= link_to'Albums',albums_path(current_artist), class: "nav-link"%></li>
-              <li ><%= link_to'Profile',artist_path(current_artist), class: "nav-link"%></li>
-              <li><%= link_to 'Sign Out',destroy_artist_session_path,method: :delete ,class: "nav-link"%></li>
-            <%else%>
-                  <li><%= link_to 'Sign In',new_user_session_path ,class: "nav-link"%></li>
-                  <li><%= link_to 'Sign In As Artist',new_artist_session_path ,class: "nav-link"%></li>
-            <%end%>
-        </ul>
-      </div>
-      <%if user_signed_in?%>
-    <%= form_tag root_path,method: :get do%>
-    <%= text_field_tag :q,params[:q],placeholder: "Search albums",style: "border-radius:10px;width:400px;margin-left:15px;" %>
-    <%= submit_tag "Search",name: nil,class:"btn btn-success btn-sm",style: "margin-left:5px;margin-right:15px;height:25px;" %>
-    <%end%>
-    <%end%>
-    </div>
-  </nav>
-
-
+<%= render partial: "layouts/display" %>
   <%if user_signed_in?%>
 
 
@@ -62,7 +24,14 @@
           <td><%= album.language %></td>
           <td><%= link_to 'Show', album_path(album),class:"btn btn-primary btn-sm" %></td>
           
-          <td><%= link_to 'Add to Playlist',insert_playlists_path(:user_id=>current_user.id,:album_id=>album.id),:method=>:post,id: "my-button",class:"btn btn-success btn-sm",style:"width:100px;" %></td></tr>
+          <td><%= form_with url: insertalbum_playlists_path, local: true do |form| %>
+                                    <div class="field form-group">
+                                      <%= text_field_tag :playlist_id, "", class:"form-control",placeholder:"Playlist Id"%><br>
+                                    </div>
+                                    <%= hidden_field_tag :album_id, album.id %>
+                                    <%= hidden_field_tag :user_id, current_user.id %>
+                                    <%= form.submit "Add to playlist" %>
+                                  <% end %></td></tr>
           <% end %>
     </tbody>
   </table>
@@ -96,7 +65,7 @@
         <td><%= link_to 'Show',album_path(album),class:"btn btn-primary btn-sm"%></td>
         <td><%= link_to 'Update',edit_album_path(album),class:"btn btn-primary btn-sm"%></td>
         <td><%= button_to 'Remove',album_path(album),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm"%></td>
-        <td><%= link_to 'Songs',songs_path(current_artist.albums),class:"btn btn-primary btn-sm" %></td>
+        <td><%= link_to 'Songs',songs_path(album_id: album.id),class:"btn btn-primary btn-sm" %></td>
       </tr>
       <%end%>
     </tbody>

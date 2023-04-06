@@ -13,7 +13,7 @@
             
             <li><%= link_to'Albums',albums_path, class:"nav-link"%></li>
             <li ><%= link_to'Songs',songs_path, class: "nav-link"%></li>
-            <li ><%= link_to'MyPlaylists',playlists_path(current_user.playlists), class: "nav-link"%></li>
+            <li ><%= link_to'MyPlaylists',playlists_path, class: "nav-link"%></li>
             <li ><%= link_to'Profile',user_path(current_user), class: "nav-link"%></li>
             <li><%= link_to 'Sign Out',destroy_user_session_path,method: :delete ,class: "nav-link"%></li>
           <%elsif artist_signed_in?%>

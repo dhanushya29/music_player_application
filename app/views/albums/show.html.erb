@@ -1,31 +1,30 @@
 <%= render 'layouts/display' %>
 
 <div class="card ", style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)max-width: 300px;max-height:800px;margin: auto;text-align: center;font-family: arial;">
-  <!-- <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="margin-top:20px;">
-    <#% if @product.image.attached? %>
-        <p>
-        <%#= image_tag(@product.image, style:"width:600px;height:400px;border-radius:10px")%>
-        </p>
-    <%# end%>
-  </div> -->
+  
+  </div> 
   <div class="card-body">
     <h5 class="card-title"><strong><%= @album.title %></strong></h5>
     <p class="card-text"><%= @album.description %></p>
     <p class="card-text",style= "color:grey;font-size:22px;"><strong><%= @album.language %></strong></p>
-
+    
+      <%if @album.image_url.present? %>
+        <p class="card-text",style="color:grey;font-size:22px;"><strong> <%= image_tag @album.image_url.to_s ,alt:'image' ,:size => "100x100" %></strong></p>
+    
+      <%else%>
+      <p class="card-text",style="color:grey;font-size:22px;"><strong><%= image_tag "https://mosaic.scdn.co/640/ab67616d00001e026fd209ba0b69ed8a3e2e0349ab67616d00001e027aa3700d9c7db21c2c5226c6ab67616d00001e02a359d88b8368698c7c44add9ab67616d00001e02a56fd563abc1c9017d6b53f0".to_s ,alt:'image' ,:size => "100x100" %></p>
+        <%end%>
     <!-- <%#= render 'albums/songshow' %> -->
-    <h2>Songs </h2>
+    <h2><b>Songs </h2>
+      
     <% @album.songs.each do |song| %>
-      <p class="card-title"><strong><%= song.title %></strong>
-      <p class="card-title"><strong><%= song.duration %></strong>
-      <p class="card-title"><strong><%= song.lyrics %></strong>
+    <p class="card-text">Song id:<%= song.id %></p>
+      <p class="card-title"><h5><%= song.title %></h5>
+      <p class="card-text"><strong><%= song.duration %></strong>
+      <p class="card-text"><strong><%= song.lyrics %></strong>
       <% end %>
-    <%if artist_signed_in? %>
-      <td><%= link_to 'Create new song',new_song_path(@album),class:"btn btn-primary btn-sm" %></td>
-      <% end %>
-    <%if user_signed_in?%>
-      <%= link_to 'Add to Playlist', insert_playlists_path(:user_id => current_user.id,:album_id => @album.id),:method => :post,class:"btn btn-success btn-sm",style:"border: none;outline: 0;padding: 12px;text-align: center;cursor: pointer;width: 50%;font-size: 18px;"%>
-   <%end%>
-
+      <br><br>
+    <%= link_to 'Back',albums_path(current_artist) %>
+    
   </div>
 </div>

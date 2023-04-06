@@ -1,6 +1,6 @@
 class AlbumsController < ApplicationController
   before_action :set_album, only: %i[ show edit update destroy ]
-  
+  # before_action :set_imageable
   # GET /albums or /albums.json
   def index
       #@albums=Album.all 
@@ -14,13 +14,14 @@ class AlbumsController < ApplicationController
       if artist_signed_in?
         @artists=Artist.all 
       end 
-    end 
+     end 
   end
 
   # GET /albums/1 or /albums/1.json
   #showing artist's album
   def show
     @songs = @album.songs
+    @image=@album.image
    # @artist=params[:artist][:artist_id]
   end
 
@@ -53,12 +54,9 @@ class AlbumsController < ApplicationController
 
   # POST /albums or /albums.json
   def create
-    # @artist = Artist.find(params[:artist_id]) #since not using devise cant use current undefined local variable #now showing record not found
-    # @album.=@artist.albums.create(title: params[:album][:title],description: params[:album][:description],language: params[:album][:language])
-    
     if artist_signed_in?
       @artist=current_artist
-      @album=@artist.albums.create(title: params[:album][:title],description: params[:album][:description],language: params[:album][:language])
+      @album=@artist.albums.create(album_params)
       if @album.save 
         redirect_to albums_path
       else 
@@ -69,6 +67,7 @@ class AlbumsController < ApplicationController
       @album=Album.find(params[:album_id])
       redirect_to playlist_path(current_user)
     end
+    
   end 
 
 
@@ -98,8 +97,12 @@ class AlbumsController < ApplicationController
     end
     
     private
+    
+    # def set_imageable
+    #   @imageable = Album.friendly.find(params[:album_id])
+
     # Only allow a list of trusted parameters through.
     def album_params
-      params.require(:album).permit(:title, :artist_id, :description, :language)
+      params.require(:album).permit(:title, :artist_id, :description, :language ,:image_url)
     end
 end

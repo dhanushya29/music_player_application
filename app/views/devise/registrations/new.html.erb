@@ -1,12 +1,19 @@
+<%= render 'layouts/display' %>
+
 <h1><%= t('.sign_up') %></h1>
 <div class="row">
-  <div class="col-9">
+  <div class="col-7">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <%= bootstrap_devise_error_messages! %>
 
       <div class="form-group">
         <%= f.label :username %>
-        <%= f.text_field :username, autofocus: true, autocomplete: 'name', class: 'form-control' %>
+        <%= f.text_field :username, autofocus: true, autocomplete: 'username', class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :phone %>
+        <%= f.text_field :phone, autofocus: true, autocomplete: 'phone', class: 'form-control' %>
       </div>
       <div class="form-group">
         <%= f.label :email %>

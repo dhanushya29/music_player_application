@@ -3,17 +3,23 @@ class SongsController < ApplicationController
 
   # GET /songs or /songs.json
   def index
-    if params[:q].present?
-      @songs=Song.where("title LIKE?","%#{params[:q]}%")
+    # if params[:q].present?
+    #   @songs=Song.where("title LIKE?","%#{params[:q]}%")
+    #   if artist_signed_in?
+    #     @artists=Artist.all
+    #   end
+    if user_signed_in?
+      @songs=Song.all
+    else
+      # @songs= current_artist.songs
       if artist_signed_in?
         @artists=Artist.all
-      end
-    else
-      @songs=Song.all
-      if artist_signed_in?
-        @artists=Artist.all 
+        @album = Album.find params[:album_id]
+        @songs = @album.songs
       end
     end
+    # @songs=Song.all 
+    # @album=Album.find(params[:id])
   end
 
   # GET /songs/1 or /songs/1.json
@@ -35,8 +41,9 @@ class SongsController < ApplicationController
         if artist_signed_in?
           @artist=current_artist
           @song=@artist.songs.create(title: params[:song][:title],duration: params[:song][:duration],lyrics: params[:song][:lyrics])
+          @song.albums << Album.find(params[:album_id])
           if @song.save
-            redirect_to songs_path
+            redirect_to songs_path(album_id: params[:album_id])
           else 
             render 'new'
           end 

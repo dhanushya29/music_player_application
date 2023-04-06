@@ -7,5 +7,9 @@ class Artist < ApplicationRecord
     has_many :songs
     has_one :image ,as: :imageable
     accepts_nested_attributes_for :image
-    #validates :name,:region ,presence: true
+
+
+    validates :region ,presence: true
+    validates_format_of :name,:with => /\A[^0-9`!@#\$%\^&*+_=]+\z/
+    validates :name,:presence=>true,:length=>{:minimum => 5 ,:maximum => 16}
 end

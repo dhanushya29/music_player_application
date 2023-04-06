@@ -1,24 +1,48 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      resources :artists 
+
+      resources :albums do 
+        get '/total' => 'artists#total',on: :collection
+      end 
+      resources :users
+
+      resources :songs,only: [:index,:new,:show,:create,:edit,:update,:destroy]
+
+      resources :playlists do 
+        get '/insert' => 'playlists#insert',on: :collection
+      end
+
+       resources :images
+    end
+  end
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   devise_for :artists do 
-    root :to => "artists#index"
+    root :to => "artists#show"
   end  
   devise_for :users 
   root 'homes#index'
   get :search,to: 'albums#search'
   resources :playlists do 
     post :insert,to: 'playlists#insert',on: :collection
+    post :insertalbum,to: 'playlists#insertalbum',on: :collection
   end 
   resources :songs
   resources :albums do
-    post :insert , to: 'albums#insert' ,on: :collection
+    resources :images,module: :albums
+      post :insert , to: 'albums#insert' ,on: :member
   end
   resources :users do 
+    resources :images,module: :users
     get :login,on: :collection
     get :profile,on: :collection
   end 
   resources :images
-  resources :albums
+  resources :albums 
   resources :artists do
+    resources :images,module: :artists
     get :artist_albums,on: :member
     get :artist_page,on: :collection
     get :login,on: :collection

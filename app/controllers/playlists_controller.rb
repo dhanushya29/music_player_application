@@ -1,20 +1,16 @@
 class PlaylistsController < ApplicationController
   before_action :set_playlist, only: %i[ show edit update destroy ]
 
-  # GET /playlists or /playlists.json
   def index
     @playlists = Playlist.all
     @users=User.all
   end
 
-  # GET /playlists/1 or /playlists/1.json
+  
   def show
     @user =current_user
-    # if @user.playlist.present?
-    #   @playlist=@user.playlist
-    #   @playlist.save
-    # end
     @song=Song.all
+    @album=Album.all 
   end
 
   # GET /playlists/new
@@ -26,27 +22,46 @@ class PlaylistsController < ApplicationController
    def insert
         @user=User.find(params[:user_id])
         @song=Song.find(params[:song_id])
-        if @user.playlists.present?
-            if @user.playlists.songs.include?(@song)
+        #@album=Album.find(params[:album_id])
+        @playlist=Playlist.find(params[:playlist_id])
+        if @playlist.present?
+          #if @song.present?
+            if @playlist.songs.include?(@song)
                 flash[:notice] = "Already added"
             else
-                @user.playlist.songs << @song
+                @playlist.songs << @song
             end
-            
+            flash[:notice] = "#{@song.title} added to playlist"
         else
             @playlist=@user.playlists.create(user_id: params[:user_id])
             @user.playlist.songs << @song
         end
-        flash[:notice] = "#{@song.name} added to playlist"
-      
+        redirect_to playlists_path
+      end
+
+      def insertalbum
+        @user=User.find(params[:user_id])
+        @album=Album.find(params[:album_id])
+        @playlist=Playlist.find(params[:playlist_id])
+        if @playlist.present?
+            if @playlist.albums.include?(@album)
+                flash[:alert] = "Already added"
+            else
+                @playlist.albums << @album
+                flash[:notice] = "#{@album.title} added to playlist"
+            end
+            
+        else
+            @playlist=@user.playlists.create(user_id: params[:user_id])
+            @user.playlist.albums << @album
+        end
         redirect_to playlists_path
     end
 
-  # GET /playlists/1/edit
   def edit
   end
 
-  # POST /playlists or /playlists.json
+  
   def create
     @playlist = Playlist.new(playlist_params)
     @user=current_user
@@ -77,7 +92,11 @@ class PlaylistsController < ApplicationController
 
   # DELETE /playlists/1 or /playlists/1.json
   def destroy
-    @playlist.destroy
+    if(params[:song_id])
+      @playlist.songs.delete( Song.find params[:song_id] )
+    else
+      @playlist.destroy
+  end
     redirect_to playlists_path
     # @user = current_user
     # @playlist=@user.playlists.where(:playlist_id=>@playlist.id)

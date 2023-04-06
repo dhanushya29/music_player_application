@@ -1,6 +1,6 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: %i[ show edit update destroy ]
-  #before_action :authenticate_artist!
+  before_action :authenticate_artist!
   # GET /artists or /artists.json
   def index
     @artists = Artist.all
@@ -25,7 +25,7 @@ class ArtistsController < ApplicationController
   # POST /artists or /artists.json
   def create
     @artist = Artist.new(artist_params)
-    
+    @artist.create_image(params[:image_url])
     respond_to do |format|
       if @artist.save
         redirect_to root_path 

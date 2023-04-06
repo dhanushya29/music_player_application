@@ -1,3 +1,5 @@
+<%= render 'layouts/display' %>
+ <br><h2 style="width:50%;margin-left:350px;font-family:serif;"><b>Artist SignUp</b></h2><br>
   <div style="width:50%;margin-left:200px;margin-top:10px">
     <h2>Artist SignUp</h2>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -11,10 +13,8 @@
       <%= f.text_field :region, autofocus: true, autocomplete: "region",class:"form-control" ,placeholder:"Region"%>
     </div><br />
     
-    <%= fields_for :image_url,@artist.image_url do |i_f| %>
     <div class="field form-group">
-    <%= i_f.text_field :image_url ,autofocus:true,autocomplete:"image_url",class:"form-control",placeholder:"ImageUrl"%><br />
-    <% end %>
+    <%= f.text_field :image_url ,autofocus:true,autocomplete:"image_url",class:"form-control",placeholder:"ImageUrl"%><br />
   </div>
 
 
