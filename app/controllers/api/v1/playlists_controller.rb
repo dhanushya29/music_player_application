@@ -1,7 +1,7 @@
-class Api::V1::PlaylistsController < ApplicationController
+class Api::V1::PlaylistsController < Api::V1::ApiController
   before_action :set_playlist, only: %i[ show edit update destroy ]
-  before_action :set_user ,only: [:create]
-  skip_before_action :verify_authenticity_token
+  # before_action :set_user ,only: [:create]
+  before_action :doorkeeper_authorize!
   def set_user
     @user=User.find(params[:user_id])
     rescue
@@ -56,7 +56,7 @@ end
 
 
   def create
-    playlist=@user.playlists.create(title: params[:title],description: params[:description])
+    playlist=current_user.playlists.create(title: params[:title],description: params[:description])
     if playlist.save
       render json: {playlist: playlist}
     else
@@ -76,7 +76,7 @@ end
  
   def destroy
      if(params.has_key?(:song_id)&params.has_key?(:user_id)&params.has_key?(:playlist_id))
-       @playlist.songs.destroy( Song.find params[:song_id] )
+       @playlist.songs.delete(Song.find params[:song_id] )
      else
        @playlist.destroy
      end

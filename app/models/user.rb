@@ -10,11 +10,15 @@ class User < ApplicationRecord
   has_one :image ,as: :imageable
   accepts_nested_attributes_for :image 
 
-  validates :username,:phone ,presence: true
-  validates_format_of :username,:with=> /\A[^0-9`!@#\$%\^&*+_=]+\z/
-  validates :username,:presence=>true,:length=>{:minimum=>10 ,:maximum=>16}
-  validates :phone,:uniqueness=>true,:numericality=>true,:length=>{:minimum=>5,:maximum=>15}
+  validates :phone ,presence: true
+  # validates_format_of :username,:with=> /\A[^0-9`!@#\$%\^&*+_=]+\z/
+  validates :username,:presence=>true,:length=>{:minimum=>4 ,:maximum=>16}
+  validates :phone,:uniqueness=>true
 
   validates :email,format: URI::MailTo::EMAIL_REGEXP
-  
+
+  def self.authenticate(email,password)
+    user=User.find_for_authentication(email: email)
+    user&.valid_password?(password) ? user : nil  
+  end
 end

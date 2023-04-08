@@ -1,6 +1,6 @@
-class Api::V1::UsersController < ApplicationController
+class Api::V1::UsersController < Api::V1::ApiController
   before_action :set_user,only: [:show,:update,:destroy]
-  skip_before_action :verify_authenticity_token
+  before_action :doorkeeper_authorize!
   def set_user
     @user=User.find(params[:id])
     rescue

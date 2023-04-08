@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  use_doorkeeper do 
+    skip_controllers :authorizations,:applications,:authorized_applications
+  end
+   devise_for :artists, controllers: {
+        registrations: 'artists/registrations'
+      }
+    devise_for :users, controllers: {
+        registrations: 'users/registrations'
+      }
   namespace :api do
     namespace :v1 do
       resources :artists 
@@ -19,10 +28,8 @@ Rails.application.routes.draw do
   end
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  devise_for :artists do 
-    root :to => "artists#show"
-  end  
-  devise_for :users 
+  
+  
   root 'homes#index'
   get :search,to: 'albums#search'
   resources :playlists do 

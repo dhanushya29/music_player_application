@@ -1,7 +1,7 @@
-class Api::V1::SongsController < ApplicationController
+class Api::V1::SongsController < Api::V1::ApiController
   before_action :set_song, only: %i[ show edit update destroy ]
-  before_action :set_artist ,only: [:create]
-  skip_before_action :verify_authenticity_token
+  # before_action :set_artist ,only: [:create]
+  before_action :doorkeeper_authorize!
   def set_song 
     @song=Song.find(params[:id])
     rescue
@@ -56,18 +56,18 @@ class Api::V1::SongsController < ApplicationController
   end
 
   def create
-    if params.has_key?(:artist_id)&params.has_key?(:album_id)
-      song=@artist.songs.create(song_params)
+    # if params.has_key?(:artist_id)&params.has_key?(:album_id)
+      song=current_artist.songs.create(song_params)
       song.albums << Album.find(params[:album_id])
       if song.save
         render json: {song:song}
       else
         render json: {message:"Song not created"}
       end 
-    else
-      playlist=@user.playlist
-      song=Song.find(params[:song_id])
-      render json: {song:song}
-    end 
+    # else
+    #   playlist=@user.playlist
+    #   song=Song.find(params[:song_id])
+    #   render json: {song:song}
+    # end 
   end
 end 

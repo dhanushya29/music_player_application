@@ -1,7 +1,7 @@
-class Api::V1::AlbumsController < ApplicationController
+class Api::V1::AlbumsController < Api::V1::ApiController
   before_action :set_album, only: %i[ show edit update destroy ]
   before_action :set_artist,only: [:create]
-  skip_before_action :verify_authenticity_token
+  before_action :doorkeeper_authorize!
   def index
       albums=Album.all 
       render json: {Albums:albums}

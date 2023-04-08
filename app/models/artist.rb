@@ -12,4 +12,9 @@ class Artist < ApplicationRecord
     validates :region ,presence: true
     validates_format_of :name,:with => /\A[^0-9`!@#\$%\^&*+_=]+\z/
     validates :name,:presence=>true,:length=>{:minimum => 5 ,:maximum => 16}
+
+    def self.authenticate(email,password)
+    artist=Artist.find_for_authentication(email: email)
+    artist&.valid_password?(password) ? artist : nil  
+  end
 end

@@ -10,7 +10,10 @@
   <p>
     <%= current_user.email %>
   </p>
-
+   
+    <p>
+    <%= image_tag @user.image_url.to_s ,alt:'image' ,:size => "100x100" %>
+  </p>
 <!-- <strong>Image:</strong>
   <#% @images.each do |image| %>
   <div class="d-flex flex-row col-3">

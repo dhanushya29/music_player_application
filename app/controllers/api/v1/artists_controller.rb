@@ -1,7 +1,7 @@
-class Api::V1::ArtistsController < ApplicationController
+class Api::V1::ArtistsController < Api::V1::Apicontroller
   before_action :set_artist,only: [:show]
   #before_action :set_album,only: [:total]
-  skip_before_action :verify_authenticity_token
+  before_action :doorkeeper_authorize!
   def index
     artists=Artist.all 
     render json: {artists:artists},status: :ok
