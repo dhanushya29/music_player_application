@@ -10,10 +10,11 @@ class User < ApplicationRecord
   has_one :image ,as: :imageable
   accepts_nested_attributes_for :image 
 
-  validates :phone ,presence: true
-  # validates_format_of :username,:with=> /\A[^0-9`!@#\$%\^&*+_=]+\z/
   validates :username,:presence=>true,:length=>{:minimum=>4 ,:maximum=>16}
-  validates :phone,:uniqueness=>true
+  validates :name, format: { with: /\A[a-zA-Z0-9]+\Z/ ,message: 'cannot include whitespaces'}
+  validates :phone,   :presence => {:message => 'hello user, bad operation!'},
+                     :numericality => true,
+                     :length => { :minimum => 10, :maximum => 15 }
 
   validates :email,format: URI::MailTo::EMAIL_REGEXP
 

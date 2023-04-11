@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       resources :songs,only: [:index,:new,:show,:create,:edit,:update,:destroy]
 
       resources :playlists do 
-        get '/insert' => 'playlists#insert',on: :collection
+        post '/insert' => 'playlists#insert',on: :collection
       end
 
        resources :images

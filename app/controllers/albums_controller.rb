@@ -58,6 +58,9 @@ class AlbumsController < ApplicationController
       @artist=current_artist
       @album=@artist.albums.create(album_params)
       if @album.save 
+         image =  @album.build_image
+         image.image_url = @album.image_url
+         image.save
         redirect_to albums_path
       else 
         render 'new'

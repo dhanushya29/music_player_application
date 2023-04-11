@@ -1,7 +1,9 @@
 class Api::V1::SongsController < Api::V1::ApiController
   before_action :set_song, only: %i[ show edit update destroy ]
-  # before_action :set_artist ,only: [:create]
+  before_action :artist_or_user,only: %i[create update destroy edit]
   before_action :doorkeeper_authorize!
+
+
   def set_song 
     @song=Song.find(params[:id])
     rescue
@@ -12,33 +14,27 @@ class Api::V1::SongsController < Api::V1::ApiController
       params.require(:song).permit(:title, :album_id, :duration, :lyrics)
   end
 
-  def set_artist
-     @artist=Artist.find(params[:artist_id])
-     rescue
-      render json: "Artist not found",status: :not_found
-  end 
-  
-  def set_user
-     @user=User.find(params[:user_id])
-   rescue
-    render json: "User not found",status: :not_found
-  end
+  def artist_or_user 
+      if current_user.present?
+        render json: "User cannot create/ modify / delete albums"
+      end 
+    end
 
-  def index
-    songs=Song.all 
-     if params.has_key?(:user_id)
+  def index 
+     if current_user.present?
        songs=Song.all
-    else
-      if params.has_key?(:artist_id)
+     else
+      if current_artist.present?
         artists=Artist.all
-        album = Album.find params[:album_id]
-        songs = @album.songs
+        #album = Album.find params[:album_id]
+        songs = current_artist.songs
       end
     end
     render json: {Songs: songs}
   end
 
   def show
+    render json: {message:"Showing song",song:@song}
   end
 
   def update
@@ -56,7 +52,6 @@ class Api::V1::SongsController < Api::V1::ApiController
   end
 
   def create
-    # if params.has_key?(:artist_id)&params.has_key?(:album_id)
       song=current_artist.songs.create(song_params)
       song.albums << Album.find(params[:album_id])
       if song.save
@@ -64,10 +59,5 @@ class Api::V1::SongsController < Api::V1::ApiController
       else
         render json: {message:"Song not created"}
       end 
-    # else
-    #   playlist=@user.playlist
-    #   song=Song.find(params[:song_id])
-    #   render json: {song:song}
-    # end 
   end
 end 

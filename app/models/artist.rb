@@ -1,7 +1,7 @@
 class Artist < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+    devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 	has_many :albums 
     has_many :songs
@@ -10,11 +10,10 @@ class Artist < ApplicationRecord
 
 
     validates :region ,presence: true
-    validates_format_of :name,:with => /\A[^0-9`!@#\$%\^&*+_=]+\z/
     validates :name,:presence=>true,:length=>{:minimum => 5 ,:maximum => 16}
-
+     validates :name, format: { with: /\A[a-zA-Z0-9]+\Z/ ,message: 'cannot include whitespaces'}
     def self.authenticate(email,password)
-    artist=Artist.find_for_authentication(email: email)
-    artist&.valid_password?(password) ? artist : nil  
-  end
+        artist=Artist.find_for_authentication(email: email)
+        artist&.valid_password?(password) ? artist : nil  
+    end
 end

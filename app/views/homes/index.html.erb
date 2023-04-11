@@ -66,9 +66,6 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                     <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                      <!-- <#% if product.image.attached? %>
-                          <%#= image_tag(product.image, class: "image")%>
-                      <%# end%> -->
                       <a href="#!">
                         <div class="hover-overlay">
                           <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -89,19 +86,19 @@
                     <div class="d-flex flex-column mt-2">
                         <%= link_to 'Show', song_path(song), class:"btn btn-primary btn-sm" %>
                         <div class="d-flex flex-column mt-2">
-                        <% if current_user.playlists.present?%>
-                                <%= form_with url: insert_playlists_path, local: true do |form| %>
-                                    <div class="field form-group">
-                                      <%= text_field_tag :playlist_id, "", class:"form-control",placeholder:"Playlist Id"%><br>
-                                    </div>
-
-
-                                    <%= hidden_field_tag :song_id, song.id %>
-                                    <%= hidden_field_tag :user_id, current_user.id %>
-                                    <%= form.submit "Add to playlist" %>
-                                  <% end %>
-                              
+                          <div class="center aligned ui container">
+                            <% if current_user.playlists.present?%>
+                              <%= form_with url: insert_playlists_path , local: true do |form| %>
+                              <%= hidden_field_tag :song_id, song.id %>
+                              <%= hidden_field_tag :user_id, current_user.id %>
+                               <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                                <br>
+                                <br>
+                                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+                              <% end %>
+                              <br>
                           <%end%>
+                            </div>
                               <%= link_to 'Create playlist', new_playlist_path(current_user),class:"btn btn-success btn-sm"%>
                     </div>
                     </div>
@@ -145,21 +142,20 @@
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                     <div class="d-flex flex-column mt-2">
-                        <%= link_to 'Show', album_path(album), class:"btn btn-primary btn-sm" %>
-                        <div class="d-flex flex-column mt-2">
-                        <% if current_user.playlists.present?%>
-                                <%= form_with url: insertalbum_playlists_path, local: true do |form| %>
-                                    <div class="field form-group">
-                                      <%= text_field_tag :playlist_id, "", class:"form-control",placeholder:"Playlist Id"%><br>
-                                    </div>
-
-
-                                    <%= hidden_field_tag :album_id, album.id %>
-                                    <%= hidden_field_tag :user_id, current_user.id %>
-                                    <%= form.submit "Add to playlist" %>
-                                  <% end %>
-                              
+                        <%= link_to 'Show', album_path(album), class:"btn btn-primary btn-sm" %><br><br>
+                        <div class="center aligned ui container">
+                            <% if current_user.playlists.present?%>
+                              <%= form_with url: insertalbum_playlists_path , local: true do |form| %>
+                              <%= hidden_field_tag :album_id, album.id %>
+                              <%= hidden_field_tag :user_id, current_user.id %>
+                               <%= form.select(:playlist_id, Playlist.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                                <br>
+                                <br>
+                                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+                              <% end %>
+                              <br>
                           <%end%>
+                            </div>
                               <%= link_to 'Create playlist', new_playlist_path(current_user),class:"btn btn-success btn-sm"%>
                     </div>
                     </div>

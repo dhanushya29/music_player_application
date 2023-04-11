@@ -26,18 +26,20 @@
           <td><%= song.lyrics %></td>
           <td><%= link_to 'Show', song_path(song),class:"btn btn-primary btn-sm" %></td>
           
-        <td>  <%= form_with url: insert_playlists_path, local: true do |form| %>
-                                    <div class="field form-group">
-                                      <%= text_field_tag :playlist_id, "", class:"form-control",placeholder:"Playlist Id"%><br>
-                                    </div>
-
-
-                                    <%= hidden_field_tag :song_id, song.id %>
-                                    <%= hidden_field_tag :user_id, current_user.id %>
-                                    <%= form.submit "Add to playlist" %>
-                                  <% end %>
-                                </td>
-          <% end %>
+        <td>  <div class="center aligned ui container">
+                            <% if current_user.playlists.present?%>
+                              <%= form_with url: insert_playlists_path , local: true do |form| %>
+                              <%= hidden_field_tag :song_id, song.id %>
+                              <%= hidden_field_tag :user_id, current_user.id %>
+                               <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                                <br>
+                                <br>
+                                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+                              <% end %>
+                              <br>
+                          <%end%>
+                            </div>
+                            <%end%>
     </tbody>
   </table>
      <br>

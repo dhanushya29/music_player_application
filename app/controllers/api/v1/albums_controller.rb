@@ -1,9 +1,15 @@
 class Api::V1::AlbumsController < Api::V1::ApiController
   before_action :set_album, only: %i[ show edit update destroy ]
-  before_action :set_artist,only: [:create]
+  #before_action :set_artist,only: [:create]
+  before_action :artist_or_user,only: %i[create update destroy edit]
   before_action :doorkeeper_authorize!
+
   def index
+    if current_artist.present?
+      albums=current_artist.albums
+    else
       albums=Album.all 
+    end 
       render json: {Albums:albums}
   end
 
@@ -24,7 +30,7 @@ class Api::V1::AlbumsController < Api::V1::ApiController
   end
 
   def create
-      album=@artist.albums.create(title: params[:album][:title],description: params[:album][:description],language: params[:album][:language])
+      album=current_artist.albums.create(title: params[:album][:title],description: params[:album][:description],language: params[:album][:language])
       if album.save 
         render json: {album:album}
       else 
@@ -44,10 +50,8 @@ class Api::V1::AlbumsController < Api::V1::ApiController
 
   
   def destroy
-    
     @album.destroy
     render json: {album:@album}
-    
   end
 
   
@@ -57,12 +61,12 @@ class Api::V1::AlbumsController < Api::V1::ApiController
     rescue
       render json: "Album not found",status: :not_found
     end
-   
-    def set_artist
-      @artist=Artist.find(params[:artist_id])
-      rescue
-      render json: "Artist not found",status: :not_found
-    end
+    
+    def artist_or_user 
+      if current_user.present?
+        render json: "User cannot create/ modify / delete albums"
+      end 
+    end 
 
     private
     

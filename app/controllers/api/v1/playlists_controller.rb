@@ -1,12 +1,13 @@
 class Api::V1::PlaylistsController < Api::V1::ApiController
   before_action :set_playlist, only: %i[ show edit update destroy ]
-  # before_action :set_user ,only: [:create]
+  before_action :artist_or_user ,only: %i[create edit update destroy index show insert]
   before_action :doorkeeper_authorize!
-  def set_user
-    @user=User.find(params[:user_id])
-    rescue
-      render json: "User not found",status: :not_found
-  end
+
+  def artist_or_user 
+      if current_artist.present?
+        render json: "Artist cannot create/ modify / view / delete playlists"
+      end 
+    end 
 
   def set_playlist
     @playlist=Playlist.find(params[:id])
@@ -15,7 +16,7 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
   end 
   
   def index
-    playlists = Playlist.all
+    playlists = current_user.playlists.all
     render json: {Playlists:playlists},status: :ok
   end
 
@@ -30,8 +31,8 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
   end
 
    def insert
-      if(params.has_key?(:user_id)&params.has_key?(:song_id)&params.has_key?(:playlist_id))
-        @user=User.find(params[:user_id])
+      if(params.has_key?(:song_id)&params.has_key?(:playlist_id))
+        @user=current_user
         song=Song.find(params[:song_id])
         playlist=Playlist.find(params[:playlist_id])
         if playlist.present?
@@ -75,12 +76,14 @@ end
 
  
   def destroy
-     if(params.has_key?(:song_id)&params.has_key?(:user_id)&params.has_key?(:playlist_id))
+     if(params.has_key?(:song_id))
        @playlist.songs.delete(Song.find params[:song_id] )
+     elsif(params.has_key?(:album_id))
+       @playlist.albums.delete(Album.find params[:album_id] )
      else
        @playlist.destroy
      end
-    render json: {playlist: @playlist}
+    render json: {message:"Deleted" , playlist: @playlist}
   end
    
   private

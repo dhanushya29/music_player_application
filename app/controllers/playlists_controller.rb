@@ -11,18 +11,17 @@ class PlaylistsController < ApplicationController
     @user =current_user
     @song=Song.all
     @album=Album.all 
+    @image=@playlist.image
   end
 
-  # GET /playlists/new
   def new
     @playlist = Playlist.new
     @user=params[:user_id]
   end
 
    def insert
-        @user=User.find(params[:user_id])
+        @user=current_users
         @song=Song.find(params[:song_id])
-        #@album=Album.find(params[:album_id])
         @playlist=Playlist.find(params[:playlist_id])
         if @playlist.present?
           #if @song.present?
@@ -66,14 +65,13 @@ class PlaylistsController < ApplicationController
     @playlist = Playlist.new(playlist_params)
     @user=current_user
     @playlist.user = @user 
-    respond_to do |format|
       if @playlist.save
-        format.html { redirect_to playlist_url(@playlist), notice: "Playlist was successfully created." }
-        format.json { render :show, status: :created, location: @playlist }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @playlist.errors, status: :unprocessable_entity }
-      end
+         image =  @playlist.build_image
+         image.image_url = @playlist.image_url
+         image.save
+        redirect_to playlists_path
+      else 
+        render 'new'
     end
   end
 
@@ -94,15 +92,12 @@ class PlaylistsController < ApplicationController
   def destroy
     if(params[:song_id])
       @playlist.songs.delete( Song.find params[:song_id] )
+    elsif (params[:album_id])
+      @playlist.albums.delete(Album.find params[:album_id])
     else
       @playlist.destroy
   end
     redirect_to playlists_path
-    # @user = current_user
-    # @playlist=@user.playlists.where(:playlist_id=>@playlist.id)
-    # @song=@playlist.songs.find(params[:song_id])
-    # @user.playlists.delete(params[:playlist_id])
-    # redirect_to playlist_path(current_user)
   end
 
   
@@ -116,6 +111,6 @@ class PlaylistsController < ApplicationController
     end
     # Only allow a list of trusted parameters through.
     def playlist_params
-      params.require(:playlist).permit(:user_id, :title, :description)
+      params.require(:playlist).permit(:user_id, :title, :description,:image_url)
     end
 end
