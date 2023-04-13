@@ -64,14 +64,9 @@ class AlbumsController < ApplicationController
         redirect_to albums_path
       else 
         render 'new'
-      end 
-    else 
-      @playlist=current_user.playlist
-      @album=Album.find(params[:album_id])
-      redirect_to playlist_path(current_user)
-    end
-    
-  end 
+      end  
+    end 
+  end
 
 
     
@@ -87,7 +82,7 @@ class AlbumsController < ApplicationController
 
   # DELETE /albums/1 or /albums/1.json
   def destroy
-    
+    # @album.songs.destroy_all
     @album.destroy
     redirect_to albums_path
     

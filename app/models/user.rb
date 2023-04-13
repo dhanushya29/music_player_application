@@ -11,7 +11,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :image 
 
   validates :username,:presence=>true,:length=>{:minimum=>4 ,:maximum=>16}
-  validates :name, format: { with: /\A[a-zA-Z0-9]+\Z/ ,message: 'cannot include whitespaces'}
+  validates :username, format: { with: /\A[a-zA-Z0-9]+\Z/ ,message: 'cannot include whitespaces'}
   validates :phone,   :presence => {:message => 'hello user, bad operation!'},
                      :numericality => true,
                      :length => { :minimum => 10, :maximum => 15 }

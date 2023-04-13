@@ -37,10 +37,6 @@ Rails.application.routes.draw do
     post :insertalbum,to: 'playlists#insertalbum',on: :collection
   end 
   resources :songs
-  resources :albums do
-    resources :images,module: :albums
-      post :insert , to: 'albums#insert' ,on: :member
-  end
   resources :users do 
     resources :images,module: :users
     get :login,on: :collection

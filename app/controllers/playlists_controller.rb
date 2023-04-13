@@ -20,11 +20,10 @@ class PlaylistsController < ApplicationController
   end
 
    def insert
-        @user=current_users
+        @user=current_user
         @song=Song.find(params[:song_id])
         @playlist=Playlist.find(params[:playlist_id])
         if @playlist.present?
-          #if @song.present?
             if @playlist.songs.include?(@song)
                 flash[:notice] = "Already added"
             else

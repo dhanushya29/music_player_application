@@ -11,7 +11,6 @@ class Artist < ApplicationRecord
 
     validates :region ,presence: true
     validates :name,:presence=>true,:length=>{:minimum => 5 ,:maximum => 16}
-     validates :name, format: { with: /\A[a-zA-Z0-9]+\Z/ ,message: 'cannot include whitespaces'}
     def self.authenticate(email,password)
         artist=Artist.find_for_authentication(email: email)
         artist&.valid_password?(password) ? artist : nil  

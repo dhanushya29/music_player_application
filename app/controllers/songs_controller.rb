@@ -13,7 +13,7 @@ class SongsController < ApplicationController
     else
       # @songs= current_artist.songs
       if artist_signed_in?
-        @artists=Artist.all
+        @artist=current_artist
         @album = Album.find params[:album_id]
         @songs = @album.songs
       end

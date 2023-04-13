@@ -1,4 +1,4 @@
-class Api::V1::ArtistsController < Api::V1::Apicontroller
+class Api::V1::ArtistsController < Api::V1::ApiController
   before_action :set_artist,only: [:show]
   #before_action :set_album,only: [:total]
   before_action :doorkeeper_authorize!
@@ -14,6 +14,9 @@ class Api::V1::ArtistsController < Api::V1::Apicontroller
 
 
   def show
+    # if params[:id].to_i != current_artist.id 
+    #   render json: {error: "You're not authrised to do that"},status: :forbidden
+    # end
     render json: {artist: @artist}
   end
 
@@ -22,7 +25,7 @@ class Api::V1::ArtistsController < Api::V1::Apicontroller
     if artist.save
       render json: {artist: artist}
     else 
-      render json: {message:"artistnot created"}
+      render json: {message:"artistnot created"},status: 425
     end
   end
   
