@@ -1,6 +1,6 @@
 class Api::V1::PlaylistsController < Api::V1::ApiController
   before_action :set_playlist, only: %i[ show edit update destroy ]
-  before_action :artist_or_user ,only: %i[create edit update destroy index show insert]
+  before_action :artist_or_user ,only: %i[ edit update destroy show insert]
   before_action :doorkeeper_authorize!
 
   def artist_or_user 
@@ -16,8 +16,12 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
   end 
   
   def index
+    if current_user.is_a? User
     playlists = current_user.playlists.all
     render json: {Playlists:playlists},status: :ok
+  else
+    render json:{message:"unauthorized"},status: :unauthorized
+  end
   end
 
   
@@ -57,11 +61,15 @@ end
 
 
   def create
-    playlist=current_user.playlists.create(title: params[:title],description: params[:description])
-    if playlist.save
-      render json: {playlist: playlist}
+    if current_user.is_a? User
+        playlist=current_user.playlists.create(title: params[:title],description: params[:description])
+        if playlist.save
+          render json: {playlist: playlist}
+        else
+          render json: {message: "Playlist not created"}
+        end
     else
-      render json: {message: "Playlist not created"}
+      render json: {message:"unauthorized"},status: :unauthorized
     end
   end
 

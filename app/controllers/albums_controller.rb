@@ -1,5 +1,6 @@
 class AlbumsController < ApplicationController
   before_action :set_album, only: %i[ show edit update destroy ]
+  # before_action :authenticate_artist!
   # before_action :set_imageable
   # GET /albums or /albums.json
   def index

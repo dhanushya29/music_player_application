@@ -66,6 +66,7 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                     <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                          <%= image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQddhLojCq__5etpmraHC7x2w8l-2Ks-LCWJA&usqp=CAU",class: "img-thumbnail" )%>
                       <a href="#!">
                         <div class="hover-overlay">
                           <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -74,6 +75,7 @@
                     </div>
                   </div>
                   <div class="col-md-6 col-lg-6 col-xl-6">
+                    <br>
                     <h5><strong><%= song.title %></strong></h5>
                     <p class="text-truncate mb-4 mb-md-0">
                         <%= song.duration %>
@@ -84,7 +86,7 @@
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                     <div class="d-flex flex-column mt-2">
-                        <%= link_to 'Show', song_path(song), class:"btn btn-primary btn-sm" %>
+                        <%= link_to 'Show', song_path(song), class:"btn btn-primary" %>
                         <div class="d-flex flex-column mt-2">
                           <div class="center aligned ui container">
                             <% if current_user.playlists.present?%>
@@ -99,7 +101,7 @@
                               <br>
                           <%end%>
                             </div>
-                              <%= link_to 'Create playlist', new_playlist_path(current_user),class:"btn btn-success btn-sm"%>
+                              <!-- <%#= link_to 'Create playlist', new_playlist_path(current_user),class:"btn btn-success btn-sm"%> -->
                     </div>
                     </div>
                     </div>
@@ -121,9 +123,12 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                     <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                      <!-- <#% if product.image.attached? %>
-                          <%#= image_tag(product.image, class: "image")%>
-                      <%# end%> -->
+                      
+                      <% if album.image_url.present? %>
+                          <%= image_tag(album.image_url, class: "img-thumbnail")%>
+                      <% else %>
+                          <%= image_tag("https://mosaic.scdn.co/640/ab67616d00001e026fd209ba0b69ed8a3e2e0349ab67616d00001e027aa3700d9c7db21c2c5226c6ab67616d00001e02a359d88b8368698c7c44add9ab67616d00001e02a56fd563abc1c9017d6b53f0",class: "img-thumbnail" )%>
+                      <% end%>
                       <a href="#!">
                         <div class="hover-overlay">
                           <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -132,6 +137,7 @@
                     </div>
                   </div>
                   <div class="col-md-6 col-lg-6 col-xl-6">
+                    <br>
                     <h5><strong><%= album.title %></strong></h5>
                     <p class="text-truncate mb-4 mb-md-0">
                         <%= album.description %>
@@ -141,8 +147,10 @@
                     </i>
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                   
                     <div class="d-flex flex-column mt-2">
-                        <%= link_to 'Show', album_path(album), class:"btn btn-primary btn-sm" %><br><br>
+                         <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
+                         <div class="d-flex flex-column mt-2">
                         <div class="center aligned ui container">
                             <% if current_user.playlists.present?%>
                               <%= form_with url: insertalbum_playlists_path , local: true do |form| %>
@@ -156,7 +164,8 @@
                               <br>
                           <%end%>
                             </div>
-                              <%= link_to 'Create playlist', new_playlist_path(current_user),class:"btn btn-success btn-sm"%>
+                          </div>
+                              <!-- <%#= link_to 'Create playlist', new_playlist_path(current_user),class:"btn btn-success btn-sm"%> -->
                     </div>
                     </div>
                     </div>
@@ -179,9 +188,11 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                     <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                      <!-- <#% if product.image.attached? %>
-                          <%#= image_tag(product.image, class: "image")%>
-                      <%# end%> -->
+                      <% if album.image_url.present? %>
+                          <%= image_tag(album.image_url, class: "img-thumbnail")%>
+                      <% else %>
+                          <%= image_tag("https://mosaic.scdn.co/640/ab67616d00001e026fd209ba0b69ed8a3e2e0349ab67616d00001e027aa3700d9c7db21c2c5226c6ab67616d00001e02a359d88b8368698c7c44add9ab67616d00001e02a56fd563abc1c9017d6b53f0",class: "img-thumbnail" )%>
+                      <% end%>
                       <a href="#!">
                         <div class="hover-overlay">
                           <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -190,6 +201,7 @@
                     </div>
                   </div>
                   <div class="col-md-6 col-lg-6 col-xl-6">
+                    <br>
                     <h5><strong><%= album.title %></strong></h5>
                     <p class="text-truncate mb-4 mb-md-0">
                         <%= album.description %>
@@ -200,7 +212,7 @@
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                     <div class="d-flex flex-column mt-2">
-                        <%= link_to 'Show', album_path(album), class:"btn btn-primary btn-sm" %>
+                        <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
                     </div>
                     </div>
                   </div>
@@ -228,9 +240,11 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                     <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                      <!-- % if product.image.attached? %>
-                          <%#= image_tag(product.image, class: "image")%>
-                      <#% end%> -->
+                      <% if album.image_url.present? %>
+                          <%= image_tag(album.image_url, class: "img-thumbnail")%>
+                      <% else %>
+                          <%= image_tag("https://mosaic.scdn.co/640/ab67616d00001e026fd209ba0b69ed8a3e2e0349ab67616d00001e027aa3700d9c7db21c2c5226c6ab67616d00001e02a359d88b8368698c7c44add9ab67616d00001e02a56fd563abc1c9017d6b53f0",class: "img-thumbnail" )%>
+                      <% end%>
                       <a href="#!">
                         <div class="hover-overlay">
                           <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -239,6 +253,7 @@
                     </div>
                   </div>
                   <div class="col-md-6 col-lg-6 col-xl-6">
+                    <br>
                     <h5><strong><%= album.title %></strong></h5>
                     <p class="text-truncate mb-4 mb-md-0">
                         <%= album.description %>
@@ -252,7 +267,9 @@
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                     <div class="d-flex flex-column mt-2">
-                        <%= link_to 'Show', album_path(album), class:"btn btn-primary btn-sm" %>
+                     <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
+                    <div class="d-flex flex-column mt-2">
+                       
                         <%= link_to 'Add to Playlist' ,new_user_session_path, class:"btn btn-success btn-sm mt-2"%>
      
                     </div>

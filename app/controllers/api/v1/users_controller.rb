@@ -14,7 +14,7 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def new
     user=User.new
-    render json: {user: users}
+    render json: {user: user}
   end
 
   def show

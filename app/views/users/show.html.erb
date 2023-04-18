@@ -1,31 +1,17 @@
 <%= render 'layouts/display' %>
-<div class="p-4 shadow-4 rounded-3" style="background-color: white;font-family:serif;">
-  <p><%= current_user.username %></p>
-  <p>
-    <%= current_user.phone %>
-  </p>
-
-  <hr class="my-4" />
-
-  <p>
-    <%= current_user.email %>
-  </p>
-   
-    <p>
-    <%= image_tag @user.image_url.to_s ,alt:'image' ,:size => "100x100" %>
-  </p>
-<!-- <strong>Image:</strong>
-  <#% @images.each do |image| %>
-  <div class="d-flex flex-row col-3">
-  <p>
-  
-  <%#= image.image_url %>
-
-  </p>  
+<div class="card ", style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)max-width: 300px;max-height:800px;margin: auto;text-align: center;font-family: arial;">
+  <div class="card-body">
+    <h5 class="card-title"><strong><%= current_user.username %></strong></h5>
+    <p class="card-text"><%= current_user.phone %></p>
+     <%if current_user.image_url.present? %>
+        <p class="card-text",style="color:grey;font-size:22px;"><strong> <%= image_tag current_user.image_url.to_s ,alt:'image' ,:size => "100x100" %></strong></p>
+    
+      <%else%>
+      <p class="card-text",style="color:grey;font-size:22px;"><strong><%= image_tag "https://mosaic.scdn.co/640/ab67616d00001e026fd209ba0b69ed8a3e2e0349ab67616d00001e027aa3700d9c7db21c2c5226c6ab67616d00001e02a359d88b8368698c7c44add9ab67616d00001e02a56fd563abc1c9017d6b53f0".to_s ,alt:'image' ,:size => "100x100" %></p>
+        <%end%>
+      </strong>
+    </p>
   </div>
-  <%#end%>
-   -->
-
   <% if alert %>
     <p class="alert alert-danger mt-4"><%= alert %></p>
   <% end %>

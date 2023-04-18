@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_11_062139) do
+ActiveRecord::Schema.define(version: 2023_04_13_063825) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2023_04_11_062139) do
 
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer "resource_owner_id"
-    t.integer "application_id", null: false
+    t.integer "application_id"
     t.string "token", null: false
     t.string "refresh_token"
     t.integer "expires_in"

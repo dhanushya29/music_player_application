@@ -34,8 +34,8 @@ RSpec.describe AlbumsController do
 	    context "with good data" do
 		    it "updates the album and redirects" do
 		      patch :update,params: {id:album.id, album: {title:"Hello",description:"all"}}
-		      expect(response).to be_redirect
-		      #expect(album.reload.title).to eq("Hello")
+		      #expect(response).to be_redirect
+		      expect(album.reload.title).to eq("Hello")
 		    end
 	    end
 		context "with bad data" do

@@ -46,15 +46,16 @@
                         </div>
                       </div>
                       <p class="text-truncate mb-4 mb-md-0">
-                          <%= song.duration %>
+                          <%= song.duration %> min
                       </p>
                       <p>Artist:
                           <%= song.artist.name %>
                       </p>
                       
-                      <div class="d-flex flex-row gap-2 col-6">
-                            <%= link_to 'Show', song_path(song), class:"btn btn-primary mt-2" %>
-                            <%= button_to  'remove', playlist_path(:user_id => current_user.id,:song_id => song.id ,:playlist_id => @playlist.id),
+                      <div class="d-flex flex-column mt-2">
+                            <%= link_to 'Show', song_path(song), class:"btn btn-primary " %> 
+                          </div>
+                            <%= button_to  'Remove', playlist_path(:user_id => current_user.id,:song_id => song.id ,:playlist_id => @playlist.id),
                                     method: :delete, data: { confirm: 'Are you sure?' } ,class:"btn btn-danger  mt-2"%>   
                         </div>
                     </div>
@@ -107,9 +108,9 @@
                           <%= album.artist.name %>
                       </p>
                       
-                      <div class="d-flex flex-row gap-2 col-6">
-                            <%= link_to 'Show', album_path(album), class:"btn btn-primary mt-2" %>
-                            <%= button_to  'remove', playlist_path(:user_id => current_user.id,:album_id => album.id ,:playlist_id => @playlist.id),
+                      <div class="d-flex flex-column mt-2">
+                            <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
+                            <%= button_to  'Remove', playlist_path(:user_id => current_user.id,:album_id => album.id ,:playlist_id => @playlist.id),
                                     method: :delete, data: { confirm: 'Are you sure?' } ,class:"btn btn-danger  mt-2"%>   
                         </div>
                     </div>

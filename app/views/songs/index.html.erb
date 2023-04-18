@@ -24,7 +24,8 @@
           <!-- <td><%#= album.artist_id %></td> -->
           <td><%= song.duration %></td>
           <td><%= song.lyrics %></td>
-          <td><%= link_to 'Show', song_path(song),class:"btn btn-primary btn-sm" %></td>
+          
+          <td><%= link_to 'Show', song_path(song),class:"btn btn-primary" %></td>
           
         <td>  <div class="center aligned ui container">
                             <% if current_user.playlists.present?%>

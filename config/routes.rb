@@ -12,9 +12,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :artists 
 
-      resources :albums do 
-        get '/total' => 'artists#total',on: :collection
-      end 
+      resources :albums  
+  
       resources :users
 
       resources :songs,only: [:index,:new,:show,:create,:edit,:update,:destroy]
@@ -43,14 +42,16 @@ Rails.application.routes.draw do
     get :profile,on: :collection
   end 
   resources :images
-  resources :albums 
+  resources :albums do 
+    resources :images,module: :albums 
+  end
   resources :artists do
     resources :images,module: :artists
-    get :artist_albums,on: :member
+    get :artist_albums,on: :collection
     get :artist_page,on: :collection
     get :login,on: :collection
     get :artist_list,on: :collection
-    get :artist_songs ,on: :member 
+    get :artist_songs ,on: :collection 
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
