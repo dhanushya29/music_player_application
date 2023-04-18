@@ -18,6 +18,11 @@ class AlbumsController < ApplicationController
      end 
   end
 
+
+  def search 
+    @albums=Album.where("title LIKE ?","%" + params[:q] + "%")
+  end
+
   # GET /albums/1 or /albums/1.json
   #showing artist's album
   def show

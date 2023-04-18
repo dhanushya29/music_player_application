@@ -31,6 +31,10 @@ class SongsController < ApplicationController
     @song = Song.new
     @album=params[:album_id]
   end
+  
+  def search 
+    @songs=Song.where("title LIKE ?","%" + params[:q] + "%")
+  end
 
   # GET /songs/1/edit
   def edit

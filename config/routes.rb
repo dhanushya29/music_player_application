@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   
   root 'homes#index'
   get :search,to: 'albums#search'
+  get :search,to: 'songs#search'
   resources :playlists do 
     post :insert,to: 'playlists#insert',on: :collection
     post :insertalbum,to: 'playlists#insertalbum',on: :collection

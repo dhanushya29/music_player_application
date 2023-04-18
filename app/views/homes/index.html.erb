@@ -26,10 +26,15 @@
           <%end%>
       </ul>
     </div>
-    <%#= form_tag root_path,method: :get do %>
+    <!-- <%#= form_tag root_path,method: :get do %>
     <%#= text_field_tag :q,params[:q],placeholder:"Search albums/songs",style: "border-radius:10px;width:400px;"%>
     <%#= submit_tag "Search",name: nil,class:"btn btn-success",style: "margin-left:5px;margin-right:15px;" %>
-    <!-- <#% end %> -->
+     <%# end %> --> 
+
+      <form class="form-inline my-2 my-lg-0" action="/search">
+        <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search for albums" aria-label="Search" style= "border-radius:10px;width:400px" value=<%= params[:q] || " " %> >
+        <button class="btn btn-success" style= "margin-left:5px;margin-right:15px" type="submit">Search</button>
+      </form>
   </div>
 </nav>
 
@@ -270,7 +275,7 @@
                      <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
                     <div class="d-flex flex-column mt-2">
                        
-                        <%= link_to 'Add to Playlist' ,new_user_session_path, class:"btn btn-success btn-sm mt-2"%>
+                     <%= link_to 'Add to Playlist' ,new_user_session_path, class:"btn btn-success mt-2"%>
      
                     </div>
                     </div>

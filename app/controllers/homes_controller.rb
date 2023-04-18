@@ -1,7 +1,9 @@
 class HomesController < ApplicationController
 	def index
-		@albums=Album.all 
-
-		@songs=Song.all
+		if params[:q].present?
+			@albums=Album.where("name LIKE?","%#{params[:q]}%")
+		else
+			@albums=Album.all 
+		end 
 	end 
 end
