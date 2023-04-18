@@ -53,7 +53,7 @@
                       </p>
                       
                       <div class="d-flex flex-column mt-2">
-                            <%= link_to 'Show', song_path(song), class:"btn btn-primary " %> 
+                            <%= link_to 'Show', song_path(song), class:"btn btn-primary text-decoration-none" %> 
                           </div>
                             <%= button_to  'Remove', playlist_path(:user_id => current_user.id,:song_id => song.id ,:playlist_id => @playlist.id),
                                     method: :delete, data: { confirm: 'Are you sure?' } ,class:"btn btn-danger  mt-2"%>   
@@ -109,7 +109,7 @@
                       </p>
                       
                       <div class="d-flex flex-column mt-2">
-                            <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
+                            <%= link_to 'Show', album_path(album), class:"btn btn-primary text-decoration-none" %>
                             <%= button_to  'Remove', playlist_path(:user_id => current_user.id,:album_id => album.id ,:playlist_id => @playlist.id),
                                     method: :delete, data: { confirm: 'Are you sure?' } ,class:"btn btn-danger  mt-2"%>   
                         </div>
@@ -121,7 +121,9 @@
               </div>
               
             </div>
+
           </div>   
+           <%= link_to 'Add to playlist',root_path,class:"btn btn-success text-decoration-none"%>
       </section>
     <%end%>
   <%end%>
@@ -139,13 +141,14 @@
                       <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2?v=v2" width="130" height="130" class="img-fluid mb-4 mr-3">
                       <h3><strong>Your Playlist is Empty</strong></h3>
                       <h4>add something</h4>
-                      <%= link_to 'Add to playlist',root_path%>              
+                      <%= link_to 'Add to playlist',root_path,class:"btn btn-success text-decoration-none"%>              
                     </div>
                 </div>
             </div>
     </div>
   
   <%end%>
+
 </div>
 </div>
 </div>

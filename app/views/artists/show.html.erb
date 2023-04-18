@@ -9,10 +9,13 @@
   <hr class="my-4" />
 
   
-
-  <p>
-    <%= image_tag @artist.image_url.to_s ,alt:'image' ,:size => "100x100" %>
-  </p>
+  <%if current_artist.image_url.present? %>
+        <p class="card-text",style="color:grey;font-size:22px;"><strong> <%= image_tag current_artist.image_url.to_s ,:size => "100x100" %></strong></p>
+    
+      <%else%>
+      <p class="card-text",style="color:grey;font-size:22px;"><strong><%= image_tag "https://cdn.dribbble.com/users/295355/screenshots/3878696/ghostdribbblefinalnewanimation_still_2x.gif?compress=1&resize=400x300".to_s  ,:size => "100x100" %></p>
+        <%end%>
+  
 
  <!-- <%# if @artist.image_url.present? %>
 <strong>Image:</strong>

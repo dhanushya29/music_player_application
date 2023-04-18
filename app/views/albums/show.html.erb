@@ -55,7 +55,7 @@
                       </p>
                       
                       <div class="d-flex flex-column mt-2">
-                            <%= link_to 'Show', song_path(song), class:"btn btn-primary " %> 
+                            <%= link_to 'Show', song_path(song), class:"btn btn-primary text-decoration-none" %> 
                           </div>
                             <%= button_to  'Remove', album_path(:artist_id=>current_artist.id,:song_id => song.id ,:album_id => @album.id),
                                     method: :delete, data: { confirm: 'Are you sure?' } ,class:"btn btn-danger  mt-2"%>   
@@ -87,7 +87,7 @@
                       <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2?v=v2" width="130" height="130" class="img-fluid mb-4 mr-3">
                       <h3><strong>Your Album is Empty</strong></h3>
                       <h4>Add something</h4>
-                      <%= link_to 'Add new song',songs_path(album_id: @album.id),class:"btn btn-primary btn-sm" %>           
+                      <%= link_to 'Add new song',songs_path(album_id: @album.id),class:"btn btn-primary btn-sm text-decoration-none" %>           
                     </div>
                 </div>
             </div>

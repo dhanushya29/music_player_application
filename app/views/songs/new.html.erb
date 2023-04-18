@@ -11,19 +11,19 @@
   </div>
 <% end %>
 
-<div  style="width:50%; margin-left:200px;margin-top:50px">
+<div  style="width:50%; margin-left:500px;margin-top:50px">
     
     <%= form_with model: @song, url: songs_path ,local: true do |form| %>
       <div class="field form-group">
-        <%= form.text_field :title,class:"form-control",placeholder:"Title"%><br>
+        <%= form.text_field :title,class:"form-control w-100",placeholder:"Title"%><br>
       </div>
 
       <div>
-        <%= form.text_field :duration,class:"form-control",placeholder:"Duration" %><br>
+        <%= form.text_field :duration,class:"form-control w-100",placeholder:"Duration" %><br>
       </div>
 
       <div>
-        <%= form.text_area :lyrics,class:"form-control",placeholder:"Lyrics" %><br>
+        <%= form.text_area :lyrics,class:"form-control w-100",placeholder:"Lyrics" %><br>
       </div>
 
       <%= hidden_field_tag :artist_id, @artist %>

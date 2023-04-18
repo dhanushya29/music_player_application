@@ -8,21 +8,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-          <li class="r4"><%= link_to'Home',root_path,class: "nav-link active" %></li>
+          <li class="r4"><%= link_to'Home',root_path,class: "nav-link text-decoration-none" %></li>
           <%if user_signed_in?%>
             
-            <li><%= link_to'Albums',albums_path, class:"nav-link"%></li>
-            <li ><%= link_to'Songs',songs_path, class: "nav-link"%></li>
-            <li ><%= link_to'MyPlaylists',playlists_path(current_user.playlists), class: "nav-link"%></li>
-            <li ><%= link_to'Profile',user_path(current_user), class: "nav-link"%></li>
-            <li><%= link_to 'Sign Out',destroy_user_session_path,method: :delete ,class: "nav-link"%></li>
+            <li><%= link_to'Albums',albums_path, class:"nav-link text-decoration-none"%></li>
+            <li ><%= link_to'Songs',songs_path, class: "nav-link text-decoration-none"%></li>
+            <li ><%= link_to'MyPlaylists',playlists_path, class: "nav-link text-decoration-none"%></li>
+            <li ><%= link_to'Profile',user_path(current_user), class: "nav-link text-decoration-none"%></li>
+            <li><%= link_to 'Sign Out',destroy_user_session_path,method: :delete ,class: "nav-link text-decoration-none"%></li>
           <%elsif artist_signed_in?%>
-            <li ><%= link_to'Albums',albums_path, class: "nav-link"%></li>
-            <li ><%= link_to'Profile',artist_path(current_artist), class: "nav-link"%></li>
-            <li><%= link_to 'Sign Out',destroy_artist_session_path,method: :delete ,class: "nav-link"%></li>
+            <li ><%= link_to'Albums',albums_path, class: "nav-link text-decoration-none"%></li>
+            <li ><%= link_to'Profile',artist_path(current_artist), class: "nav-link text-decoration-none"%></li>
+            <li><%= link_to 'Sign Out',destroy_artist_session_path,method: :delete ,class: "nav-link text-decoration-none"%></li>
           <%else%>
-                <li><%= link_to 'Sign In',new_user_session_path ,class: "nav-link"%></li>
-                <li><%= link_to 'Sign In As Artist',new_artist_session_path ,class: "nav-link"%></li>
+                <li><%= link_to 'Sign In',new_user_session_path ,class: "nav-link text-decoration-none"%></li>
+                <li><%= link_to 'Sign In As Artist',new_artist_session_path ,class: "nav-link text-decoration-none"%></li>
           <%end%>
       </ul>
     </div>
@@ -61,7 +61,7 @@
 
 <div style="margin-top:30px">
 <% if user_signed_in? %>
-  <% @songs.each do |song| %>
+  <% Song.all.each do |song| %>
     <section style="background-color: #eee;">
       <div class="container py-8">
         <div class="row justify-content-center mb-3">
@@ -91,7 +91,7 @@
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                     <div class="d-flex flex-column mt-2">
-                        <%= link_to 'Show', song_path(song), class:"btn btn-primary" %>
+                        <%= link_to 'Show', song_path(song), class:"btn btn-primary text-decoration-none" %>
                         <div class="d-flex flex-column mt-2">
                           <div class="center aligned ui container">
                             <% if current_user.playlists.present?%>
@@ -101,12 +101,11 @@
                                <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
                                 <br>
                                 <br>
-                                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+                                <%= form.submit "Add to playlist ",class:"btn btn-primary text-decoration-none" %>
                               <% end %>
                               <br>
                           <%end%>
                             </div>
-                              <!-- <%#= link_to 'Create playlist', new_playlist_path(current_user),class:"btn btn-success btn-sm"%> -->
                     </div>
                     </div>
                     </div>
@@ -154,7 +153,7 @@
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                    
                     <div class="d-flex flex-column mt-2">
-                         <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
+                         <%= link_to 'Show', album_path(album), class:"btn btn-primary text-decoration-none" %>
                          <div class="d-flex flex-column mt-2">
                         <div class="center aligned ui container">
                             <% if current_user.playlists.present?%>
@@ -217,7 +216,7 @@
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                     <div class="d-flex flex-column mt-2">
-                        <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
+                        <%= link_to 'Show', album_path(album), class:"btn btn-primary text-decoration-none" %>
                     </div>
                     </div>
                   </div>
@@ -272,10 +271,10 @@
                   </div>
                   <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                     <div class="d-flex flex-column mt-2">
-                     <%= link_to 'Show', album_path(album), class:"btn btn-primary" %>
+                     <%= link_to 'Show', album_path(album), class:"btn btn-primary text-decoration-none" %>
                     <div class="d-flex flex-column mt-2">
                        
-                     <%= link_to 'Add to Playlist' ,new_user_session_path, class:"btn btn-success mt-2"%>
+                     <%= link_to 'Add to Playlist' ,new_user_session_path, class:"btn btn-success mt-2 text-decoration-none"%>
      
                     </div>
                     </div>

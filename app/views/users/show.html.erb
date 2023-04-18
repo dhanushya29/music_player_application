@@ -4,10 +4,10 @@
     <h5 class="card-title"><strong><%= current_user.username %></strong></h5>
     <p class="card-text"><%= current_user.phone %></p>
      <%if current_user.image_url.present? %>
-        <p class="card-text",style="color:grey;font-size:22px;"><strong> <%= image_tag current_user.image_url.to_s ,alt:'image' ,:size => "100x100" %></strong></p>
+        <p class="card-text",style="color:grey;font-size:22px;"><strong> <%= image_tag current_user.image_url.to_s ,:size => "100x100" %></strong></p>
     
       <%else%>
-      <p class="card-text",style="color:grey;font-size:22px;"><strong><%= image_tag "https://mosaic.scdn.co/640/ab67616d00001e026fd209ba0b69ed8a3e2e0349ab67616d00001e027aa3700d9c7db21c2c5226c6ab67616d00001e02a359d88b8368698c7c44add9ab67616d00001e02a56fd563abc1c9017d6b53f0".to_s ,alt:'image' ,:size => "100x100" %></p>
+      <p class="card-text",style="color:grey;font-size:22px;"><strong><%= image_tag "https://cdn.dribbble.com/users/295355/screenshots/3878696/ghostdribbblefinalnewanimation_still_2x.gif?compress=1&resize=400x300".to_s  ,:size => "100x100" %></p>
         <%end%>
       </strong>
     </p>

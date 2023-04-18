@@ -21,14 +21,14 @@
         <td><%= playlist.title %></td>
         <td><%= playlist.description %></td>
 
-        <td><%= link_to 'Show',playlist_path(playlist),class:"btn btn-primary btn-sm"%></td>
-        <td><%= link_to 'Update',edit_playlist_path(playlist),class:"btn btn-primary btn-sm"%></td>
+        <td><%= link_to 'Show',playlist_path(playlist),class:"btn btn-primary btn-sm text-decoration-none"%></td>
+        <td><%= link_to 'Update',edit_playlist_path(playlist),class:"btn btn-primary btn-sm text-decoration-none"%></td>
         <td><%= button_to 'Remove',playlist_path(playlist),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm"%></td>
       </tr>
       <% end %>
     </tbody>
   </table>
-     <%= link_to 'Create new Playlist',new_playlist_path(:user_id => params[:id]),class:"btn btn-success",style:"width:450px;margin-left:400px;"%>
+     <%= link_to 'Create new Playlist',new_playlist_path(:user_id => params[:id]),class:"btn btn-success text-decoration-none",style:"width:450px;margin-left:400px;"%>
   <br>
   <% end %>
   <% if flash %>

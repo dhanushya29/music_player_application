@@ -11,15 +11,12 @@ class SongsController < ApplicationController
     if user_signed_in?
       @songs=Song.all
     else
-      # @songs= current_artist.songs
       if artist_signed_in?
         @artist=current_artist
         @album = Album.find params[:album_id]
         @songs = @album.songs
       end
     end
-    # @songs=Song.all 
-    # @album=Album.find(params[:id])
   end
 
   # GET /songs/1 or /songs/1.json
@@ -32,9 +29,9 @@ class SongsController < ApplicationController
     @album=params[:album_id]
   end
   
-  def search 
-    @songs=Song.where("title LIKE ?","%" + params[:q] + "%")
-  end
+  # def search 
+  #   @songs=Song.where("title LIKE ?","%" + params[:q] + "%")
+  # end
 
   # GET /songs/1/edit
   def edit

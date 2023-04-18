@@ -13,7 +13,7 @@
     <p class="card-text"><%= @song.duration %></p>
     <p class="price",style= "color:grey;font-size:22px;"><strong><%= @song.lyrics %></strong></p>
     <%if user_signed_in?%>
-      <%= link_to 'Add to Playlist', insert_playlists_path(:user_id => current_user.id,:song_id=>@song.id),:method => :post,class:"btn btn-success btn-sm",style:"border: none;outline: 0;padding: 12px;text-align: center;cursor: pointer;width: 50%;font-size: 18px;"%>
+      <%= link_to 'Add to Playlist', insert_playlists_path(:user_id => current_user.id,:song_id=>@song.id),:method => :post,class:"btn btn-success btn-sm text-decoration-none",style:"border: none;outline: 0;padding: 12px;text-align: center;cursor: pointer;width: 50%;font-size: 18px;"%>
    <%end%>
 
   </div>

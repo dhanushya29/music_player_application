@@ -22,7 +22,7 @@
           <!-- <td><%#= album.artist_id %></td> -->
           <td><%= album.description %></td>
           <td><%= album.language %></td>
-          <td><%= link_to 'Show', album_path(album),class:"btn btn-primary" %></td>
+          <td><%= link_to 'Show', album_path(album),class:"btn btn-primary text-decoration-none" %></td>
           
           <td><div class="center aligned ui container">
                             <% if current_user.playlists.present?%>
@@ -69,15 +69,15 @@
         <td><%= album.description %></td>
         <td><%= album.language %></td>
 
-        <td><%= link_to 'Show',album_path(album),class:"btn btn-primary btn-sm"%></td>
-        <td><%= link_to 'Update',edit_album_path(album),class:"btn btn-primary btn-sm"%></td>
-        <td><%= button_to 'Remove',album_path(album),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm"%></td>
-        <td><%= link_to 'Songs',songs_path(album_id: album.id),class:"btn btn-primary btn-sm" %></td>
+        <td><%= link_to 'Show',album_path(album),class:"btn btn-primary btn-sm text-decoration-none"%></td>
+        <td><%= link_to 'Update',edit_album_path(album),class:"btn btn-primary btn-sm text-decoration-none"%></td>
+        <td><%= button_to 'Remove',album_path(album),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm text-decoration-none"%></td>
+        <td><%= link_to 'Songs',songs_path(album_id: album.id),class:"btn btn-primary btn-sm text-decoration-none" %></td>
       </tr>
       <%end%>
     </tbody>
   </table>
-  <%= link_to "Add new album", new_album_path(:artist_id=>params[:id]),class:"btn btn-success",style:"margin-left:1300px;width:300px" %>
+  <%= link_to "Add new album", new_album_path(:artist_id=>params[:id]),class:"btn btn-success text-decoration-none",style:"margin-left:1300px;width:300px" %>
   <%end%>
   <% if flash %>
     <p class="notice text-success mt-4"><%= notice %></p>
