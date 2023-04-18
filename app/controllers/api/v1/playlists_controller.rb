@@ -35,13 +35,14 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
   end
 
    def insert
+    if current_user.is_a? User
       if(params.has_key?(:song_id)&params.has_key?(:playlist_id))
         @user=current_user
         song=Song.find(params[:song_id])
         playlist=Playlist.find(params[:playlist_id])
         if playlist.present?
             if playlist.songs.include?(song)
-                render json: {message:"Already added"}
+                render json: {message:"Already added"},status: :ok
             else
                 playlist.songs << song
                 render json: {message:"Song added"}
@@ -52,8 +53,10 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
             render json: {message:"Playlist is created and song is added to playlist",playlist:playlist,song:song.as_json}
         end
         #render json:{message:"Enter params correctly"}
-
     end
+  else
+    render json:{message:"unauthorized"},status: :unauthorized
+  end
 end
 
   def edit
@@ -62,7 +65,7 @@ end
 
   def create
     if current_user.is_a? User
-        playlist=current_user.playlists.create(title: params[:title],description: params[:description])
+        playlist=current_user.playlists.create(title: params[:playlist][:title],description: params[:playlist][:description])
         if playlist.save
           render json: {playlist: playlist}
         else
@@ -96,6 +99,6 @@ end
    
   private
   def playlist_params
-    params.permit(:title,:description)
+    params.permit(:title,:description,:user_id,:song_id,:playlist_id)
   end   
 end

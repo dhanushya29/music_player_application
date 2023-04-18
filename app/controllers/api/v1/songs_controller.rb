@@ -1,6 +1,6 @@
 class Api::V1::SongsController < Api::V1::ApiController
   before_action :set_song, only: %i[ show edit update destroy ]
-  before_action :artist_or_user,only: %i[create update destroy edit]
+  before_action :artist_or_user,only: %i[update destroy edit]
   before_action :doorkeeper_authorize!
 
 
@@ -52,6 +52,7 @@ class Api::V1::SongsController < Api::V1::ApiController
   end
 
   def create
+    if current_artist.is_a? Artist
       song=current_artist.songs.create(song_params)
       song.albums << Album.find(params[:album_id])
       if song.save
@@ -59,5 +60,8 @@ class Api::V1::SongsController < Api::V1::ApiController
       else
         render json: {message:"Song not created"}
       end 
+    else
+      render json:{message:"unauthorized"},status: :unauthorized
+    end
   end
 end 
