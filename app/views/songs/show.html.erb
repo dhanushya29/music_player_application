@@ -1,4 +1,4 @@
-<%= render 'layouts/display' %>
+"<%= render 'layouts/display' %>
 
 <div class="card ", style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)max-width: 300px;max-height:800px;margin: auto;text-align: center;font-family: arial;">
   <!-- <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="margin-top:20px;">
@@ -11,9 +11,27 @@
   <div class="card-body">
     <h5 class="card-title"><strong><%= @song.title %></strong></h5>
     <p class="card-text"><%= @song.duration %></p>
-    <p class="price",style= "color:grey;font-size:22px;"><strong><%= @song.lyrics %></strong></p>
+    <p class="card-text",style= "color:grey;font-size:22px;"><strong><%= @song.lyrics %></strong></p>
+   <% if @song.song_url.present? %>
+    <p class="card-text",style= "color:grey;font-size:22px;"><audio src="<%= @song.song_url %>" controls></audio></p>
+    <% else %>
+    <p class="card-text",style= "color:grey;font-size:22px;"><audio src="https://isaiminisong.com/play.php?file=VGFtaWwgMjAxNSBTb25ncy9OYWFudW0gUm93ZHlkaGFhbi9LYW5uYWFuZSBLYW5uZS5tcDM=&fileid=11839" controls></audio></p>
+    <%end%>
     <%if user_signed_in?%>
-      <%= link_to 'Add to Playlist', insert_playlists_path(:user_id => current_user.id,:song_id=>@song.id),:method => :post,class:"btn btn-success btn-sm text-decoration-none",style:"border: none;outline: 0;padding: 12px;text-align: center;cursor: pointer;width: 50%;font-size: 18px;"%>
+      <div class="center aligned ui container">
+                            <% if current_user.playlists.present?%>
+                              <%= form_with url: insert_playlists_path , local: true do |form| %>
+                              <%= hidden_field_tag :song_id, @song.id %>
+                              <%= hidden_field_tag :user_id, current_user.id %>
+                               <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                                <br>
+                                <br>
+                                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+                              <% end %>
+                              <br>
+                          <%end%>
+                            </div>
+                            
    <%end%>
 
   </div>

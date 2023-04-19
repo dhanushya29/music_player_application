@@ -41,10 +41,10 @@ class SongsController < ApplicationController
   def create
         if artist_signed_in?
           @artist=current_artist
-          @song=@artist.songs.create(title: params[:song][:title],duration: params[:song][:duration],lyrics: params[:song][:lyrics])
+          @song=@artist.songs.create(title: params[:song][:title],duration: params[:song][:duration],lyrics: params[:song][:lyrics],song_url: params[:song][:song_url])
           @song.albums << Album.find(params[:album_id])
           if @song.save
-            redirect_to songs_path(album_id: params[:album_id])
+            redirect_to songs_path(album_id: params[:album_id]),{notice: "Song was successfully created"}
           else 
             render 'new'
           end 
@@ -59,7 +59,7 @@ class SongsController < ApplicationController
   def update
     respond_to do |format|
       if @song.update(song_params)
-        format.html { redirect_to songs_path, notice: "Song was successfully updated." }
+        format.html { redirect_to song_path(@song)}
         format.json { render :show, status: :ok, location: @song }
       else
         render 'new'
@@ -72,7 +72,7 @@ class SongsController < ApplicationController
     @song.destroy
 
     respond_to do |format|
-      format.html { redirect_to songs_path, notice: "Song was successfully destroyed." }
+      format.html { redirect_to songs_path(album_id: params[:album_id]), notice: "Song was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -85,6 +85,6 @@ class SongsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def song_params
-      params.require(:song).permit(:title, :album_id, :duration, :lyrics)
+      params.require(:song).permit(:title, :album_id, :duration, :lyrics,:song_url)
     end
 end

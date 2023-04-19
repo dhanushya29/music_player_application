@@ -10,11 +10,14 @@
       <div>
         <%= form.text_field :duration,class:"form-control w-100",placeholder:"Duration" %><br>
       </div>
-
+      <div>
+        <%= form.text_field :song_url,class:"form-control w-100",placeholder:"Song_url" %><br>
+      </div>
       <div>
         <%= form.text_area :lyrics,class:"form-control w-100",placeholder:"Lyrics" %><br>
       </div>
       <%= hidden_field_tag :artist_id, @artist %>
+      <%= hidden_field_tag :album_id, @album %>
       <div>
         <%= form.submit :Submit,style:"border: none;border-radius:5px;outline: 0;padding: 12px;color: white;background-color: #000;text-align: center;cursor: pointer;width: 50%;font-size: 15px;margin-left:150px;margin-top:30px" %>
       </div>

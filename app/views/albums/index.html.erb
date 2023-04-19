@@ -1,47 +1,40 @@
 <%= render partial: "layouts/display" %>
   <%if user_signed_in?%>
+  <div class="row mx-auto" >
+     <% @albums.each do |album| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <% if album.image_url.present? %>
+        <img class="card-img-top rounded mx-auto d-block" src="<%= album.image_url%>" alt="Card image cap">
+        <% else %>
+        <img class="card-img-top rounded mx-auto d-block " src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <%end%>
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-secondary"><%= album.title %></h5>
+          <p class="card-text text-center"><%= album.description %></p>
+          <p class="card-text text-center"><%= album.language %></p>
 
+          <%= link_to 'Show', album_path(album),class:"btn btn-primary text-decoration-none " %>
+        
+          <div class="center aligned ui container">
+              <% if current_user.playlists.present?%>
+                <%= form_with url: insertalbum_playlists_path , local: true do |form| %>
+                <%= hidden_field_tag :album_id, album.id %>
+                <%= hidden_field_tag :user_id, current_user.id %>
+                 <%= form.select(:playlist_id, current_user.playlists.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                  <br>
+                  <br>
+                  <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+                <% end %>
+                <br>
+              <%end%>
+          </div>
+        </div>
+      </div>
+    </div>
+      <%end%>
+    </div>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <!-- <th scope="col">   </th> -->
-        <th scope="col">Title</th>
-        <!-- <th scope="col">Artist</th> -->
-        <th scope="col">Description</th>
-        <th scope="col">Language</th>
-        <th scope="col">   </th>
-        <th colspan="3"></th> 
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @albums.each do |album| %>
-        <tr>
-          <td><%= album.title %></td>
-          <!-- <td><%#= album.artist_id %></td> -->
-          <td><%= album.description %></td>
-          <td><%= album.language %></td>
-          <td><%= link_to 'Show', album_path(album),class:"btn btn-primary text-decoration-none" %></td>
-          
-          <td><div class="center aligned ui container">
-                            <% if current_user.playlists.present?%>
-                              <%= form_with url: insertalbum_playlists_path , local: true do |form| %>
-                              <%= hidden_field_tag :album_id, album.id %>
-                              <%= hidden_field_tag :user_id, current_user.id %>
-                               <%= form.select(:playlist_id, current_user.playlists.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
-                                <br>
-                                <br>
-                                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
-                              <% end %>
-                              <br>
-                          <%end%>
-                            </div>
-          <% end %>
-    </tbody>
-  </table>
-     <%#= link_to 'Go to Playlist',playlist_path(current_user),class:"btn btn-success",style:"width:450px;margin-left:400px;"%>
-  <br>
   <%else%>
 
    <table class="table",style="font-family:serif;">
@@ -79,7 +72,5 @@
   </table>
   <%= link_to "Add new album", new_album_path(:artist_id=>params[:id]),class:"btn btn-success text-decoration-none",style:"margin-left:1300px;width:300px" %>
   <%end%>
-  <% if flash %>
-    <p class="notice text-success mt-4"><%= notice %></p>
-<% end %>
+
 

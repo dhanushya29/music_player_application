@@ -1,49 +1,36 @@
 <%= render partial: "layouts/display" %>
 
 
+
   <%if user_signed_in?%>
-
-
-  <table class="table">
-    <thead>
-      <tr>
-        <!-- <th scope="col">   </th> -->
-        <th scope="col">Title</th>
-        <!-- <th scope="col">Artist</th> -->
-        <th scope="col">Duration</th>
-        <th scope="col">Lyrics</th>
-        <th scope="col">   </th>
-        <th colspan="3"></th> 
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @songs.each do |song| %>
-        <tr>
-          <td><%= song.title %></td>
-          <!-- <td><%#= album.artist_id %></td> -->
-          <td><%= song.duration %></td>
-          <td><%= song.lyrics %></td>
-          
-          <td><%= link_to 'Show', song_path(song),class:"btn btn-primary text-decoration-none" %></td>
-          
-        <td>  <div class="center aligned ui container">
-                            <% if current_user.playlists.present?%>
-                              <%= form_with url: insert_playlists_path , local: true do |form| %>
-                              <%= hidden_field_tag :song_id, song.id %>
-                              <%= hidden_field_tag :user_id, current_user.id %>
-                               <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
-                                <br>
-                                <br>
-                                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
-                              <% end %>
-                              <br>
-                          <%end%>
-                            </div>
-                            <%end%>
-    </tbody>
-  </table>
-     <br>
+    <div class="row mx-auto" >
+     <% @songs.each do |song| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <img class="card-img-top" src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-secondary"><%= song.title %></h5>
+          <p class="card-text text-center"><%= song.duration %></p>
+          <%= link_to 'Show', song_path(song),class:"btn btn-primary text-decoration-none " %>
+        
+          <div class="center aligned ui container text-center">
+            <% if current_user.playlists.present?%>
+              <%= form_with url: insert_playlists_path , local: true do |form| %>
+              <%= hidden_field_tag :song_id, song.id %>
+              <%= hidden_field_tag :user_id, current_user.id %>
+               <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                <br>
+                <br>
+                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+              <% end %>
+              <br>
+            <%end%>
+          </div>
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
   <%else%>
 
    <table class="table",style="font-family:serif;">
@@ -68,15 +55,13 @@
         <!-- <td><%#= s.lyrics %></td> -->
 
         <td><%= link_to 'Show',song_path(s),class:"btn btn-primary btn-sm text-decoration-none"%></td>
-        <td><%= link_to 'Update',edit_song_path(s),class:"btn btn-primary btn-sm text-decoration-none"%></td>
-        <td><%= button_to 'Remove',song_path(s),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm"%></td>
+        <td><%= link_to 'Update',edit_song_path(s,:album_id=>params[:album_id]),class:"btn btn-primary btn-sm text-decoration-none"%></td>
+        <td><%= button_to 'Remove',song_path(s,:album_id=>params[:album_id]),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm"%></td>
       </tr>
       <%end%>
     </tbody>
   </table>
   <%#end%>
   <%= link_to "Add new song", new_song_path(:artist_id=>params[:artist_id],:album_id=>params[:album_id]),class:"btn btn-success text-decoration-none",style:"margin-left:1300px;width:300px" %>
-  <% if flash %>
-    <p class="notice text-success mt-4"><%= notice %></p>
-<% end %>
+ 
 <%end %>
