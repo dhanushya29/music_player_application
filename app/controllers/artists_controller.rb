@@ -1,7 +1,7 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: %i[ show edit update destroy ]
   before_action :authenticate_artist!
-  # GET /artists or /artists.json
+  
   def index
     @artists = Artist.all
   end
@@ -9,8 +9,6 @@ class ArtistsController < ApplicationController
   # GET /artists/1 or /artists/1.json
   def show
     @image=@artist.image 
-    # @albums=@artist.albums.all
-    # @artist = Artist.find(params[:id])
   end
 
   # GET /artists/new

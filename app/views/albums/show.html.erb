@@ -3,8 +3,8 @@
 
 <div class="card ", style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)max-width: 300px;max-height:800px;margin: auto;text-align: center;font-family: arial;">
   <div class="card-body">
-    <h5 class="card-title"><strong><%= @album.title %></strong></h5>
-    <p class="card-text"><%= @album.description %></p>
+    <h5 class="card-title text-danger font-weight-bold"><strong><%= @album.title %></strong></h5>
+    <p class="card-text text-success font-weight-bold"><%= @album.description %></p>
         <p class="card-text"><%= @album.language %></p>
      <%if @album.image_url.present? %>
         <p class="card-text",style="color:grey;font-size:22px;"><strong> <%= image_tag @album.image_url.to_s ,alt:'image' ,:size => "100x100" %></strong></p>
@@ -14,7 +14,7 @@
         <%end%>
     <!-- <%#= render 'albums/songshow' %> -->
 
-    <h3 style="font-family:serif;text-align:center;margin-top:40px;">Album Details</h3>
+    <h3 class="text-info font-weight-bold" style="font-family:serif;text-align:center;margin-top:40px;">Album Details</h3>
 <div style="margin-top:20px">
   <% if alert %>
     <p class="alert alert-danger"><%= alert %></p>

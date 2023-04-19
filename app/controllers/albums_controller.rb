@@ -1,10 +1,7 @@
 class AlbumsController < ApplicationController
   before_action :set_album, only: %i[ show edit update destroy ]
   # before_action :authenticate_artist!
-  # before_action :set_imageable
-  # GET /albums or /albums.json
   def index
-      #@albums=Album.all 
       if params[:q].present?
         @albums=Album.where("title LIKE?","%#{params[:q]}%")
         if artist_signed_in?
@@ -18,23 +15,14 @@ class AlbumsController < ApplicationController
      end 
   end
 
-
-  def search 
-    @albums=Album.where("title LIKE ?","%" + params[:q] + "%")
-  end
-
-  # GET /albums/1 or /albums/1.json
-  #showing artist's album
   def show
     @songs = @album.songs
     @image=@album.image
-   # @artist=params[:artist][:artist_id]
   end
 
-  # GET /albums/new
   def new
     @album = Album.new
-    @artist=params[:artist_id] #undefined method error
+    @artist=params[:artist_id] 
   end
   
 
@@ -89,6 +77,7 @@ class AlbumsController < ApplicationController
   # DELETE /albums/1 or /albums/1.json
   def destroy
     # @album.songs.destroy_all
+
     @album.destroy
     redirect_to albums_path
     
@@ -102,9 +91,7 @@ class AlbumsController < ApplicationController
     
     private
     
-    # def set_imageable
-    #   @imageable = Album.friendly.find(params[:album_id])
-
+  
     # Only allow a list of trusted parameters through.
     def album_params
       params.require(:album).permit(:title, :artist_id, :description, :language ,:image_url)

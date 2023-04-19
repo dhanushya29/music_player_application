@@ -1,6 +1,6 @@
 FactoryBot.define do 
 	factory :album do 
-		title {"Hello"}
+		title {"hello"}
 		description {"all type of genre"}
 		language {"tamil"}
 	end 

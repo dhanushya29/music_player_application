@@ -1,6 +1,6 @@
 FactoryBot.define do 
 	factory :song do 
-		title {"Aioaio"}
+		title {"aioaio"}
 		duration {"4:50"}
 		lyrics {"ahghghjuyfgfffff"}
 	end 

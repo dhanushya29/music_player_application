@@ -17,6 +17,24 @@ class User < ApplicationRecord
                      :length => { :minimum => 10, :maximum => 15 }
 
   validates :email,format: URI::MailTo::EMAIL_REGEXP
+  after_validation :normalize_email,on: :create
+
+  before_create do |user|
+    puts "About to crete #{user.username}"
+  end
+
+  after_create :just_created
+
+  private
+
+  def normalize_email
+    self.email = email.downcase
+  end
+  
+
+  def just_created
+    puts "just creted an user"
+  end
 
   def self.authenticate(email,password)
     user=User.find_for_authentication(email: email)

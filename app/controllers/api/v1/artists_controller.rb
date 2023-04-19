@@ -14,9 +14,6 @@ class Api::V1::ArtistsController < Api::V1::ApiController
 
 
   def show
-    # if params[:id].to_i != current_artist.id 
-    #   render json: {error: "You're not authrised to do that"},status: :forbidden
-    # end
     render json: {artist: @artist}
   end
 

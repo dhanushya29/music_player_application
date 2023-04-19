@@ -1,13 +1,8 @@
 class SongsController < ApplicationController
   before_action :set_song, only: %i[ show edit update destroy ]
   # before_action :authenticate_artist!
-  # GET /songs or /songs.json
+  
   def index
-    # if params[:q].present?
-    #   @songs=Song.where("title LIKE?","%#{params[:q]}%")
-    #   if artist_signed_in?
-    #     @artists=Artist.all
-    #   end
     if user_signed_in?
       @songs=Song.all
     else
@@ -29,9 +24,6 @@ class SongsController < ApplicationController
     @album=params[:album_id]
   end
   
-  # def search 
-  #   @songs=Song.where("title LIKE ?","%" + params[:q] + "%")
-  # end
 
   # GET /songs/1/edit
   def edit
@@ -39,20 +31,20 @@ class SongsController < ApplicationController
 
   # POST /songs or /songs.json
   def create
-        if artist_signed_in?
-          @artist=current_artist
-          @song=@artist.songs.create(title: params[:song][:title],duration: params[:song][:duration],lyrics: params[:song][:lyrics],song_url: params[:song][:song_url])
-          @song.albums << Album.find(params[:album_id])
-          if @song.save
-            redirect_to songs_path(album_id: params[:album_id]),{notice: "Song was successfully created"}
-          else 
-            render 'new'
-          end 
-        else 
-          @playlist=current_user.playlist
-          @song=Song.find(params[:song_id])
-          redirect_to playlist_path(current_user)
-        end 
+    if artist_signed_in?
+      @artist=current_artist
+      @song=@artist.songs.create(title: params[:song][:title],duration: params[:song][:duration],lyrics: params[:song][:lyrics],song_url: params[:song][:song_url])
+      @song.albums << Album.find(params[:album_id])
+      if @song.save
+        redirect_to songs_path(album_id: params[:album_id]),{notice: "Song was successfully created"}
+      else 
+        render 'new'
+      end 
+    else 
+      @playlist=current_user.playlist
+      @song=Song.find(params[:song_id])
+      redirect_to playlist_path(current_user)
+    end 
   end
 
   # PATCH/PUT /songs/1 or /songs/1.json

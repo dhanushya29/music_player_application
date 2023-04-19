@@ -1,6 +1,6 @@
 FactoryBot.define do 
 	factory :playlist do 
-		title {"Hello"}
+		title {"hello"}
 		description {"hii"}
 	end 
 end

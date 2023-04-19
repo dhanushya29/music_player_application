@@ -46,4 +46,16 @@ RSpec.describe Song,type: :model do
 				end 
 			end 
 		end 
+
+		describe "Callback testing" do 
+    	let(:artist){create(:artist)}
+		let(:song) {create(:song,artist: artist)}
+
+		context "normalize title" do 
+			it "does the capitalisation" do 
+				song.validate!
+				expect(song.reload.title).to eq "Aioaio"
+			end
+		end
+	end
 end 

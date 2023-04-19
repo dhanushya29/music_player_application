@@ -29,12 +29,19 @@ Doorkeeper.configure do
 
   use_refresh_token
   # This block will be called to check whether the resource owner is authenticated or not.
-  # resource_owner_authenticator do
+  resource_owner_authenticator do 
   #   raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
   #   # Put your resource owner authentication logic here.
   #   # Example implementation:
-  #   #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
-  # end
+      if params[:type] == "User"
+       User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
+      elsif params[:type] == "Artist"
+        Artist.find_by(id: session[:artist_id]) || redirect_to(new_artist_session_url)
+      else
+        nil
+      end
+       
+   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
@@ -116,7 +123,7 @@ Doorkeeper.configure do
   # Access token expiration time (default: 2 hours).
   # If you want to disable expiration, set this to `nil`.
   #
-  # access_token_expires_in 2.hours
+  access_token_expires_in 1.day
 
   # Assign custom TTL for access tokens. Will be used instead of access_token_expires_in
   # option if defined. In case the block returns `nil` value Doorkeeper fallbacks to
@@ -236,7 +243,7 @@ Doorkeeper.configure do
   # `grant_type` - the grant type of the request (see Doorkeeper::OAuth)
   # `scopes` - the requested scopes (see Doorkeeper::OAuth::Scopes)
   #
-  # use_refresh_token
+  use_refresh_token
 
   # Provide support for an owner to be assigned to each registered application (disabled by default)
   # Optional parameter confirmation: true (default: false) if you want to enforce ownership of
@@ -282,7 +289,7 @@ Doorkeeper.configure do
   # Check out https://github.com/doorkeeper-gem/doorkeeper/wiki/Changing-how-clients-are-authenticated
   # for more information on customization
   #
-  # access_token_methods :from_bearer_authorization, :from_access_token_param, :from_bearer_param
+   access_token_methods :from_bearer_authorization, :from_access_token_param, :from_bearer_param
 
   # Forces the usage of the HTTPS protocol in non-native redirect uris (enabled
   # by default in non-development environments). OAuth2 delegates security in

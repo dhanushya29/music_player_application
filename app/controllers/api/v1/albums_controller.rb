@@ -1,7 +1,5 @@
 class Api::V1::AlbumsController < Api::V1::ApiController
   before_action :set_album, only: %i[ show edit update destroy ]
-  #before_action :set_artist,only: [:create]
-  # before_action :artist_or_user,only: %i[update destroy edit]
   before_action :doorkeeper_authorize!
 
   def index
@@ -19,26 +17,20 @@ class Api::V1::AlbumsController < Api::V1::ApiController
   end
 
 
-  def new
-    album = Album.new
-    render json: {album:album}
-  end
-  
-  
-
   def edit
   end
 
   def create
     if current_artist.is_a? Artist
-      album=current_artist.albums.create(title: params[:album][:title],description: params[:album][:description],language: params[:album][:language])
-      if album.save 
-        render json: {album:album}
+      @album = Album.new(album_params)
+      @album.artist_id=current_artist.id
+      if @album.save 
+        render json: {album:@album}
       else 
         render json: {message:"Album not created"}
       end 
     else 
-      render json: {message:"Album not created"},status: :unauthorized
+      render json: {message:"unauthorized"},status: :unauthorized
     end
   end 
 
@@ -46,20 +38,32 @@ class Api::V1::AlbumsController < Api::V1::ApiController
     
   def update
     if current_artist.is_a? Artist
-    if @album.update(album_params)
-      render json: {album:@album}
+      if @album.artist_id == current_artist.id
+        if @album.update(album_params)
+          render json: {album:@album}
+        else
+          render json: {message:"Album not updated"}
+        end
+      else
+        render json: {message:"unauthorized"},status: :unauthorized
+      end
     else
-      render json: {message:"Album not updated"}
+      render json:{message:"unauthorized"},status: :unauthorized
     end
-  else
-    render json:{message:"unauthorized"},status: :unauthorized
-  end
   end
 
   
   def destroy
-    @album.destroy
-    render json: {album:@album}
+    if current_artist.is_a? Artist
+      if @album.artist_id == current_artist.id
+        @album.destroy
+        render json: {album:@album}
+      else
+        render json: {message:"Album not deleted"}
+      end
+    else
+      render json: {message:"unauthorized"},status: :unauthorized
+    end
   end
 
   

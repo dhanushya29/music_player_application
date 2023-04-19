@@ -65,4 +65,11 @@ RSpec.describe User,type: :model do
 			expect(association).to be(:has_one)
 		end
 	end 
+
+	describe "Callback" do 
+		let!(:user9){create(:user)}
+		it "should downcase email" do
+		   expect(user9.reload.email).to eq "ankitha@gmail.com"
+		 end
+	end
 end

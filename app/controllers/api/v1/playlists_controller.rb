@@ -1,6 +1,6 @@
 class Api::V1::PlaylistsController < Api::V1::ApiController
   before_action :set_playlist, only: %i[ show edit update destroy ]
-  before_action :artist_or_user ,only: %i[ edit update destroy show insert]
+  # before_action :artist_or_user ,only: %i[ edit update destroy show insert]
   before_action :doorkeeper_authorize!
 
   def artist_or_user 
@@ -17,16 +17,20 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
   
   def index
     if current_user.is_a? User
-    playlists = current_user.playlists.all
-    render json: {Playlists:playlists},status: :ok
-  else
-    render json:{message:"unauthorized"},status: :unauthorized
-  end
+      playlists = current_user.playlists.all
+      render json: {Playlists:playlists},status: :ok
+    else
+      render json:{message:"unauthorized"},status: :unauthorized
+    end
   end
 
   
   def show
-   render json: {message:"Showing playlist",playlist:@playlist,songs:@playlist.songs}
+    if @playlist.user_id == current_user.id 
+       render json: {message:"Showing playlist",playlist:@playlist,songs:@playlist.songs}
+    else
+      render json: {message:"unauthorized"},status: :unauthorized
+    end
   end
 
   def new
@@ -35,29 +39,28 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
   end
 
    def insert
-    if current_user.is_a? User
-      if(params.has_key?(:song_id)&params.has_key?(:playlist_id))
-        @user=current_user
-        song=Song.find(params[:song_id])
-        playlist=Playlist.find(params[:playlist_id])
-        if playlist.present?
-            if playlist.songs.include?(song)
-                render json: {message:"Already added"},status: :ok
+      if current_user.is_a? User
+          if(params.has_key?(:song_id)&params.has_key?(:playlist_id))
+            @user=current_user
+            song=Song.find(params[:song_id])
+            playlist=Playlist.find(params[:playlist_id])
+            if playlist.present?
+                if playlist.songs.include?(song)
+                    render json: {message:"Already added"},status: :ok
+                else
+                    playlist.songs << song
+                    render json: {message:"Song added"}
+                end
             else
-                playlist.songs << song
-                render json: {message:"Song added"}
+                playlist=@user.playlists.create(user_id: params[:user_id])
+                @user.playlist.songs << song
+                render json: {message:"Playlist is created and song is added to playlist",playlist:playlist,song:song.as_json}
             end
-        else
-            playlist=@user.playlists.create(user_id: params[:user_id])
-            @user.playlist.songs << song
-            render json: {message:"Playlist is created and song is added to playlist",playlist:playlist,song:song.as_json}
-        end
-        #render json:{message:"Enter params correctly"}
-    end
-  else
-    render json:{message:"unauthorized"},status: :unauthorized
+          end
+      else
+        render json:{message:"unauthorized"},status: :unauthorized
+      end
   end
-end
 
   def edit
   end
@@ -78,23 +81,39 @@ end
 
   
   def update
-      if @playlist.update(playlist_params)
-         render json: {playlist: @playlist}
-      else 
-        render json: {message:"Playlist not updated"}
+     if current_user.is_a? User
+      if @playlist.user_id == current_user.id
+        if @playlist.update(playlist_params)
+           render json: {playlist: @playlist}
+        else 
+          render json: {message:"Playlist not updated"}
+        end
+      else
+        render json: {message: "unauthorized"},status: :unauthorized
       end
+    else
+      render json:{message: "unauthorized"},status: :unauthorized
+    end
   end
 
  
   def destroy
-     if(params.has_key?(:song_id))
-       @playlist.songs.delete(Song.find params[:song_id] )
-     elsif(params.has_key?(:album_id))
-       @playlist.albums.delete(Album.find params[:album_id] )
-     else
-       @playlist.destroy
-     end
-    render json: {message:"Deleted" , playlist: @playlist}
+    if current_user.is_a? User
+      if @playlist.user_id == current_user.id
+         if(params.has_key?(:song_id))
+           @playlist.songs.delete(Song.find params[:song_id] )
+         elsif(params.has_key?(:album_id))
+           @playlist.albums.delete(Album.find params[:album_id] )
+         else
+           @playlist.destroy
+         end
+         render json: {message:"Deleted" , playlist: @playlist}
+      else
+        render json:{message:"unauthorized"},status: :unauthorized
+      end
+    else
+      render json: {message:"unauthorized" },status: :unauthorized
+    end
   end
    
   private

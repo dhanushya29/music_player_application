@@ -6,6 +6,7 @@ RSpec.describe "Albums",type: :request do
     # let(:token) {instance_double('Doorkeeper::AccessToken')}
 	let(:artist_token) {create(:doorkeeper_access_token,resource_owner_id: artist.id)}
 	let(:user_token) {create(:doorkeeper_access_token,resource_owner_id: user.id)}
+
 	describe "GET /api/v1/albums" do 
 		it "should need access token " do 
 			get '/api/v1/albums'

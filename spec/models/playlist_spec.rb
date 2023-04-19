@@ -50,4 +50,27 @@ RSpec.describe Playlist,type: :model do
 
 		end
 	end
+	describe "Callback testing" do 
+    	let(:user){create(:user)}
+		let(:playlist) {create(:playlist,user:user)}
+        
+		context "normalize title" do 
+			it "does the capitalisation" do 
+				playlist.validate!
+				expect(playlist.reload.title).to eq "Hello"
+			end
+		end
+
+		context "deleting songs" do 
+			it "should destroy songs" do 
+				expect(playlist.songs.empty?).to eq(true)
+			end
+		end
+
+		context "deleting albums" do 
+			it "should destroy albums" do 
+				expect(playlist.albums.empty?).to eq(true)
+			end
+		end
+	end
 end 

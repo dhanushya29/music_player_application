@@ -95,7 +95,7 @@ RSpec.describe "Playlists",type: :request do
     		context 'when song is already present' do 
     			it 'should return already added' do 
     				post insert_api_v1_playlists_path,params: {access_token:user_token.token,song_id:song.id,id:playlist.id}
-    				expect(response).to have_http_status(:ok)
+    				expect(response).to have_http_status(:no_content)
     			end 
     		end 
 

@@ -30,13 +30,18 @@ Rails.application.routes.draw do
   
   
   root 'homes#index'
-  get :search,to: 'albums#search'
-  # get :search,to: 'songs#search'
+  
+  resources :search do 
+    get :search,to: 'search#index'
+  end
+  
   resources :playlists do 
     post :insert,to: 'playlists#insert',on: :collection
     post :insertalbum,to: 'playlists#insertalbum',on: :collection
   end 
-  resources :songs
+  resources :songs do 
+    get :search,to: 'songs#search'
+  end
   resources :users do 
     resources :images,module: :users
     get :login,on: :collection
@@ -45,6 +50,7 @@ Rails.application.routes.draw do
   resources :images
   resources :albums do 
     resources :images,module: :albums 
+    get :search,to: 'albums#search'
   end
   resources :artists do
     resources :images,module: :artists

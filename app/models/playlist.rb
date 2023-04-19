@@ -7,10 +7,15 @@ class Playlist < ApplicationRecord
 	has_one :image ,as: :imageable
 	accepts_nested_attributes_for :image 
 	after_validation :normalize_title,on: :create
-
+    before_destroy :destroy_songs
 	validates :title,:description,presence: true
 
 	private 
+    
+    def destroy_songs 
+    	self.songs.clear
+    	self.albums.clear
+    end
 
 	def normalize_title
 		self.title = title.upcase.titleize

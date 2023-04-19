@@ -1,0 +1,166 @@
+<%= render 'layouts/display' %>
+<h1>Search Results</h1>
+
+<%if @albums.present? %>
+<%if user_signed_in?%>
+  <div class="row mx-auto" >
+     <% @albums.each do |album| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <% if album.image_url.present? %>
+        <img class="card-img-top rounded mx-auto d-block" src="<%= album.image_url%>" alt="Card image cap">
+        <% else %>
+        <img class="card-img-top rounded mx-auto d-block " src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <%end%>
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= album.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Genre: <%= album.description %></p>
+          <p class="card-text text-center">Language: <%= album.language %></p>
+          <div class="center aligned ui container text-center">
+              <% if current_user.playlists.present?%>
+                <%= form_with url: insertalbum_playlists_path , local: true do |form| %>
+                <%= hidden_field_tag :album_id, album.id %>
+                <%= hidden_field_tag :user_id, current_user.id %>
+                 <%= form.select(:playlist_id, current_user.playlists.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                  <br>
+                  <br>
+                  <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+                <% end %>
+                <br>
+              <%end%>
+          </div>
+
+          <%= link_to 'Show', album_path(album),class:"btn btn-primary text-decoration-none " %><br>
+        
+          
+        </div>
+      </div>
+    </div>
+      <%end%>
+    </div>
+
+  <%elsif artist_signed_in?%>
+  <div class="row mx-auto" >
+     <% @albums.each do |album| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <% if album.image_url.present? %>
+        <img class="card-img-top rounded mx-auto d-block" src="<%= album.image_url%>" alt="Card image cap">
+        <% else %>
+        <img class="card-img-top rounded mx-auto d-block " src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <%end%>
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= album.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Genre: <%= album.description %></p>
+          <p class="card-text text-center">Language: <%= album.language %></p>
+          <%= link_to 'Show',album_path(album),class:"btn btn-primary btn-sm text-decoration-none"%></td>
+          <%= link_to 'Update',edit_album_path(album),class:"btn btn-primary btn-sm text-decoration-none ",style:"margin-left:390px;"%></td>
+          <%= button_to 'Remove',album_path(album),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm text-decoration-none",style:"margin-left:230px;"%>
+          <br>
+          <%= link_to 'Songs',songs_path(album_id: album.id),class:"btn btn-primary btn-sm text-decoration-none",style:"margin-left:250px;" %>
+        
+          
+        </div>
+      </div>
+    </div>
+      <%end%>
+    </div>
+    <br>
+  <%= link_to "Add new album", new_album_path(:artist_id=>params[:id]),class:"btn btn-success text-decoration-none",style:"margin-left:700px;width:300px" %>
+
+  <%else%>
+  <div class="row mx-auto" >
+     <% @albums.each do |album| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <% if album.image_url.present? %>
+        <img class="card-img-top rounded mx-auto d-block" src="<%= album.image_url%>" alt="Card image cap">
+        <% else %>
+        <img class="card-img-top rounded mx-auto d-block " src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <%end%>
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= album.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Genre: <%= album.description %></p>
+          <p class="card-text text-center">Language: <%= album.language %></p>
+         <%= link_to 'Add to Playlist' ,new_user_session_path, class:"btn btn-success btn-sm mt-2 text-decoration-none ",style:"margin-left:220px;"%>
+        </div>
+      </div>
+    </div>
+      <%end%>
+    </div>
+  <% end %>
+<% elsif @songs.present? %>
+<%if user_signed_in?%>
+    <div class="row mx-auto" >
+     <% @songs.each do |song| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <img class="card-img-top" src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= song.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Duration: <%= song.duration %></p>
+          <div class="center aligned ui container text-center">
+            <% if current_user.playlists.present?%>
+              <%= form_with url: insert_playlists_path , local: true do |form| %>
+              <%= hidden_field_tag :song_id, song.id %>
+              <%= hidden_field_tag :user_id, current_user.id %>
+               <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                <br>
+                <br>
+                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+              <% end %>
+              <br>
+            <%end%>
+          </div>
+          <%= link_to 'Show', song_path(song),class:"btn btn-primary text-decoration-none " %><br>
+        
+          
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
+  <%elsif artist_signed_in? %>
+  <div class="row mx-auto" >
+     <% @songs.each do |song| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <img class="card-img-top" src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= song.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Duration: <%= song.duration %></p>
+          
+          <%= link_to 'Show',song_path(song),class:"btn btn-primary btn-sm text-decoration-none"%>
+        <%= link_to 'Update',edit_song_path(song,:album_id=>params[:album_id]),class:"btn btn-primary btn-sm text-decoration-none",style:"margin-left:390px;"%>
+        <%= button_to 'Remove',song_path(song,:album_id=>params[:album_id]),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm",style:"margin-left:230px;"%>
+        
+          
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
+<br>
+  <%= link_to "Add new song", new_song_path(:artist_id=>params[:artist_id],:album_id=>params[:album_id]),class:"btn btn-success text-decoration-none",style:"margin-left:750px;width:300px" %>
+ 
+<%else%>
+<div class="row mx-auto" >
+     <% @songs.each do |song| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+       <img class="card-img-top" src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= song.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Genre: <%= song.duration %></p>
+         <%= link_to 'Add to Playlist' ,new_user_session_path, class:"btn btn-success btn-sm mt-2 text-decoration-none ",style:"margin-left:220px;"%>
+        </div>
+      </div>
+    </div>
+      <%end%>
+    </div>
+  <% end %>
+
+<%else%>
+
+< Empty >
+<%end%>

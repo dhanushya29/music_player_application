@@ -18,8 +18,6 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def show
-    # image=@user.image.all 
-    # render json: {user:@user,image:image}
   end
 
   def update

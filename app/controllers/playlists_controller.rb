@@ -91,11 +91,14 @@ class PlaylistsController < ApplicationController
   def destroy
     if(params[:song_id])
       @playlist.songs.delete( Song.find params[:song_id] )
+      {notice: "Playlist's song was deleted successfully"}
     elsif (params[:album_id])
       @playlist.albums.delete(Album.find params[:album_id])
+      {notice: "Playlist's album was deleted successfully"}
     else
       @playlist.destroy
-  end
+      {notice: "Playlist was deleted successfully"}
+    end
     redirect_to playlists_path
   end
 
