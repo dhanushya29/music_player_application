@@ -29,14 +29,10 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
     if @playlist.user_id == current_user.id 
        render json: {message:"Showing playlist",playlist:@playlist,songs:@playlist.songs}
     else
-      render json: {message:"unauthorized"},status: :unauthorized
+      render json: {message:"You are not allowed to see"},status: 403
     end
   end
 
-  def new
-    playlist = Playlist.new
-    render json: {playlist: playlist}
-  end
 
    def insert
       if current_user.is_a? User
@@ -68,23 +64,25 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
 
   def create
     if current_user.is_a? User
-        playlist=current_user.playlists.create(title: params[:playlist][:title],description: params[:playlist][:description])
-        if playlist.save
-          render json: {playlist: playlist}
+        @playlist=Playlist.new(playlist_params)
+        @playlist.user_id=current_user.id
+        if @playlist.save
+          render json: {message: "Playlist #{@playlist.id} is created successfully"},status: 201
         else
           render json: {message: "Playlist not created"}
         end
     else
-      render json: {message:"unauthorized"},status: :unauthorized
+      render json: {message:"You are not allowed to create"},status: 403
     end
   end
 
+ 
   
   def update
      if current_user.is_a? User
       if @playlist.user_id == current_user.id
         if @playlist.update(playlist_params)
-           render json: {playlist: @playlist}
+           render json: {message: "Playlist #{playlist.id} is updated successfully"}
         else 
           render json: {message:"Playlist not updated"}
         end
@@ -92,7 +90,7 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
         render json: {message: "unauthorized"},status: :unauthorized
       end
     else
-      render json:{message: "unauthorized"},status: :unauthorized
+     render json: {error:"You are not allowed to update"},status: 403
     end
   end
 
@@ -106,13 +104,14 @@ class Api::V1::PlaylistsController < Api::V1::ApiController
            @playlist.albums.delete(Album.find params[:album_id] )
          else
            @playlist.destroy
+          render json: {message:"Playlist is deleted"},status: 204
          end
-         render json: {message:"Deleted" , playlist: @playlist}
+         
       else
-        render json:{message:"unauthorized"},status: :unauthorized
+        render json: {error:"You are not allowed to delete"},status: 403
       end
     else
-      render json: {message:"unauthorized" },status: :unauthorized
+        render json:{message:"unauthorized"},status: :unauthorized
     end
   end
    

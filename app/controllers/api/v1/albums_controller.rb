@@ -25,12 +25,12 @@ class Api::V1::AlbumsController < Api::V1::ApiController
       @album = Album.new(album_params)
       @album.artist_id=current_artist.id
       if @album.save 
-        render json: {album:@album}
+        render json: {message: "Album #{@album.id} is created successfully"},status: 201
       else 
         render json: {message:"Album not created"}
       end 
     else 
-      render json: {message:"unauthorized"},status: :unauthorized
+      render json: {error:"You are not allowed to create"},status: 403
     end
   end 
 
@@ -40,15 +40,15 @@ class Api::V1::AlbumsController < Api::V1::ApiController
     if current_artist.is_a? Artist
       if @album.artist_id == current_artist.id
         if @album.update(album_params)
-          render json: {album:@album}
+          render json: {message: "Album #{@album.id} is updated successfully"}
         else
           render json: {message:"Album not updated"}
         end
       else
-        render json: {error:"You are not allowed to create"},status: 403
+        render json:{error:"unauthorized"},status: :unauthorized
       end
     else
-      render json:{error:"unauthorized"},status: :unauthorized
+      render json: {error:"You are not allowed to updatee"},status: 403
     end
   end
 
@@ -56,13 +56,16 @@ class Api::V1::AlbumsController < Api::V1::ApiController
   def destroy
     if current_artist.is_a? Artist
       if @album.artist_id == current_artist.id
-        @album.destroy
-        render json: {album:@album}
+        if @album.destroy
+          render json: {message: "Album #{@album.id} is deleted successfully"},status: 204
+        else
+          render json: {message:"Album not deleted"}
+        end
       else
-        render json: {message:"Album not deleted"}
+         render json:{error:"unauthorized"},status: :unauthorized
       end
     else
-      render json: {message:"unauthorized"},status: :unauthorized
+      render json: {message:"You are not allowed to delete"},status: 403
     end
   end
 

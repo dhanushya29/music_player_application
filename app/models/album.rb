@@ -2,7 +2,7 @@ class Album < ApplicationRecord
 	belongs_to :artist 
     has_and_belongs_to_many :songs ,dependent: :destroy
     has_and_belongs_to_many :playlists,dependent: :destroy
-    has_one :image ,as: :imageable
+    has_one :image ,as: :imageable,dependent: :destroy
     accepts_nested_attributes_for :image
     after_validation :normalize_title,on: :create
     before_destroy :destroy_songs
@@ -18,7 +18,7 @@ class Album < ApplicationRecord
 	private 
 
 	def destroy_songs 
-    	self.songs.clear
+    	self.songs.delete
     end
 
 	def normalize_title

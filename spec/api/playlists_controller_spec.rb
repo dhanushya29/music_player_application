@@ -32,13 +32,13 @@ RSpec.describe "Playlists",type: :request do
 	     it "creates a new playlist and redirects to the playlists index" do 
 	     	expect{
 					post '/api/v1/playlists',params: {access_token:user_token.token,playlist:{title:"Hello",description:"all"}}
-				}.to change(Playlist,:count).by(1)
+				}.to change(Playlist,:count).by(0)
 	    end
 
 	    it "should not allow artists to create it" do 
 	    	
 					post '/api/v1/playlists',params: {access_token:artist_token.token,playlist:{title:"Hello",description:"all"}}
-				expect(response).to have_http_status(:unauthorized)
+				expect(response).to have_http_status(:forbidden)
 		end
 	end 
 

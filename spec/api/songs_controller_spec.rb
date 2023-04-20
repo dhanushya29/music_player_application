@@ -41,7 +41,7 @@ RSpec.describe "Songs",type: :request do
 
 	    it "should not allow users to create it" do 
 			post '/api/v1/songs',params: {access_token:user_token.token,song:{title:"Hello",duration:"4:08",lyrics:"hi all"}}
-		    expect(response).to have_http_status(:unauthorized)
+		    expect(response).to have_http_status(:forbidden)
 		end
 	end 
 
@@ -97,7 +97,7 @@ RSpec.describe "Songs",type: :request do
 
         it "deletes song" do 
         	delete api_v1_song_path(song),params:{id:song.id,access_token:artist_token.token}
-        	expect(response).to have_http_status(200)
+        	expect(response).to have_http_status(204)
         end 
     end
 end

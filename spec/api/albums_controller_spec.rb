@@ -43,7 +43,7 @@ RSpec.describe "Albums",type: :request do
 	    it "should not allow users to create it" do 
 	    	
 					post '/api/v1/albums',params: {access_token:user_token.token,album:{title:"Hello",description:"all",language:"tamil"}}
-				expect(response).to have_http_status(:unauthorized)
+				expect(response).to have_http_status(:forbidden)
 		end
 	end 
 
@@ -104,7 +104,7 @@ RSpec.describe "Albums",type: :request do
 
         it "deletes album" do 
         	delete api_v1_album_path(album),params:{id:album.id,access_token:artist_token.token}
-        	expect(response).to have_http_status(200)
+        	expect(response).to have_http_status(204)
         end 
     end
    

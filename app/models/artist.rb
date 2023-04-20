@@ -5,7 +5,7 @@ class Artist < ApplicationRecord
          :recoverable, :rememberable, :validatable
 	has_many :albums 
     has_many :songs
-    has_one :image ,as: :imageable
+    has_one :image ,as: :imageable,dependent: :destroy
     accepts_nested_attributes_for :image
     after_validation :normalize_email,on: :create
 
