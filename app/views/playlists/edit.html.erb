@@ -1,6 +1,24 @@
-<h1>Editing Playlist</h1>
+<%= render 'layouts/display' %>
 
-<%= render 'form', playlist: @playlist %>
 
-<%= link_to 'Show', @playlist %> |
-<%= link_to 'Back', playlists_path %>
+<div  style="width:50%; margin-left:500px;margin-top:50px">
+    
+    <%= form_with(model: @playlist, local: true) do |form| %>
+      <div class="field form-group">
+        <%= form.text_field :title,class:"form-control w-100",placeholder:"Title"%><br>
+      </div>
+
+      <div>
+        <%= form.text_field :description,class:"form-control w-100",placeholder:"Description" %><br>
+      </div>
+      
+      <div>
+        <%= form.text_field :image_url,class:"form-control w-100",placeholder:"Image_Url" %><br>
+      </div>
+
+      <%= hidden_field_tag :user_id, @user %>
+      <div>
+        <%= form.submit :Submit,style:"border: none;border-radius:5px;outline: 0;padding: 12px;color: white;background-color: #000;text-align: center;cursor: pointer;width: 50%;font-size: 15px;margin-left:150px;margin-top:30px" %>
+      </div>
+    <% end %>
+</div>

@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-sm py-0 navbar-light bg-light">
+  <div class="navbar-brand" href="#"><img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTifDO2QG1FcKP6W508NmdSzSWB9MZAFYM0aA&usqp=CAU" alt="myStore" style="width: 70px;"></div>
+<div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <li class="r4"><%= link_to'Home',root_path,class: "nav-link text-decoration-none" %></li>
+          <%if user_signed_in?%>
+            
+            <li><%= link_to'Albums',albums_path, class:"nav-link text-decoration-none"%></li>
+            <li ><%= link_to'Songs',songs_path, class: "nav-link text-decoration-none"%></li>
+            <li ><%= link_to'MyPlaylists',playlists_path, class: "nav-link text-decoration-none"%></li>
+            <li ><%= link_to'Profile',user_path(current_user), class: "nav-link text-decoration-none"%></li>
+            <li><%= link_to 'Sign Out',destroy_user_session_path,method: :delete ,class: "nav-link text-decoration-none"%></li>
+          <%elsif artist_signed_in?%>
+            <li ><%= link_to'Albums',albums_path(current_artist), class: "nav-link text-decoration-none"%></li>
+            <li ><%= link_to'Profile',artist_path(current_artist), class: "nav-link text-decoration-none"%></li>
+            <li><%= link_to 'Sign Out',destroy_artist_session_path,method: :delete ,class: "nav-link text-decoration-none"%></li>
+          <%else%>
+                <li><%= link_to 'Sign In',new_user_session_path ,class: "nav-link text-decoration-none"%></li>
+                <li><%= link_to 'Sign In As Artist',new_artist_session_path ,class: "nav-link text-decoration-none"%></li>
+          <%end%>
+      </ul>
+    </div>
+    <form class="form-inline my-2 my-lg-0" action="/search">
+        <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search for albums/songs" aria-label="Search"  style= "border-radius:10px;width:400px" value=<%= params[:q] || " " %> >
+        <button class="btn btn-success" style= "margin-left:5px;margin-right:15px" type="submit">Search</button>
+      </form>
+  </div>
+</nav>

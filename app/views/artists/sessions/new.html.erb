@@ -1,0 +1,53 @@
+
+
+
+<%= render 'layouts/display' %>
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://wallpaperaccess.com/full/1162901.jpg"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+            <p class="lead fw-normal mb-0 me-3 text-primary"style="margin-left:130px;">Sign in</p>
+          </div>
+          <!-- Email input -->
+           <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="form-outline mb-4">
+              <div class="form-group">
+                <%= f.label :email %>
+                <%= f.email_field :email, autofocus: true, autocomplete: 'email', placeholder: "Enter email" ,class: 'form-control form-control-lg' %>
+              </div>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <div class="form-group">
+              <%= f.label :password %>
+              <%= f.password_field :password, autocomplete: 'current-password',placeholder: "Enter password", class: 'form-control form-control-lg' %>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <!-- Checkbox -->
+            <% if devise_mapping.rememberable? %>
+              <div class="field">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="actions">
+            <%= f.submit "Log in" %>
+          </div>
+        <%end%>
+          <%= render 'artists/shared/links' %>
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+</section>

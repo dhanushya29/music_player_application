@@ -1,24 +1,105 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @album.title %>
-</p>
+<%= render 'layouts/display' %>
 
-<p>
-  <strong>Artist:</strong>
-  <%= @album.artist_id %>
-</p>
+<div class="card ", style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)max-width: 300px;max-height:800px;margin: auto;text-align: center;font-family: arial;">
+  <div class="card-body">
+    <h5 class="card-title text-danger font-weight-bold"><strong><%= @album.title %></strong></h5>
+    <p class="card-text text-success font-weight-bold"><%= @album.description %></p>
+        <p class="card-text"><%= @album.language %></p>
+     <%if @album.image_url.present? %>
+        <p class="card-text",style="color:grey;font-size:22px;"><strong> <%= image_tag @album.image_url.to_s ,alt:'image' ,:size => "100x100" %></strong></p>
+    
+      <%else%>
+      <p class="card-text",style="color:grey;font-size:22px;"><strong><%= image_tag "https://mosaic.scdn.co/640/ab67616d00001e026fd209ba0b69ed8a3e2e0349ab67616d00001e027aa3700d9c7db21c2c5226c6ab67616d00001e02a359d88b8368698c7c44add9ab67616d00001e02a56fd563abc1c9017d6b53f0".to_s ,alt:'image' ,:size => "100x100" %></p>
+        <%end%>
+    <!-- <%#= render 'albums/songshow' %> -->
 
-<p>
-  <strong>Description:</strong>
-  <%= @album.description %>
-</p>
-
-<p>
-  <strong>Language:</strong>
-  <%= @album.language %>
-</p>
-
-<%= link_to 'Edit', edit_album_path(@album) %> |
-<%= link_to 'Back', albums_path %>
+    <h3 class="text-info font-weight-bold" style="font-family:serif;text-align:center;margin-top:40px;">Album Details</h3>
+<div style="margin-top:20px">
+  <% if alert %>
+    <p class="alert alert-danger"><%= alert %></p>
+  <% end %>
+  <% if @album.songs.present?%>
+    <% @album.songs.each do |song| %>
+      <section style="background-color: #eee;">
+        <div class="container py-1">
+          <div class="row justify-content-center mb-3">
+            <div class="col-md-12 col-xl-10">
+              <div class="card shadow-0 border rounded-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                      <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                        <a href="#!">
+                          <div class="hover-overlay">
+                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-6">
+                      <h5><strong><%= song.title %></strong></h5>
+                      <div class="d-flex flex-row">
+                        <div class="text mb-1 me-2">
+                          <div class="fa fa-star"></div>
+                          <div class="fa fa-star"></div>
+                          <div class="fa fa-star"></div>
+                          <div class="fa fa-star"></div>
+                        </div>
+                      </div>
+                      <p class="text-truncate mb-4 mb-md-0">
+                          <%= song.duration %> min
+                      </p>
+                      <p>Artist:
+                          <%= song.artist.name %>
+                      </p>
+                      
+                      <div class="d-flex flex-column mt-2">
+                            <%= link_to 'Show', song_path(song), class:"btn btn-primary text-decoration-none" %> 
+                          </div>
+                          <% if artist_signed_in? %>
+                            <%= button_to  'Remove', album_path(:artist_id=>current_artist.id,:song_id => song.id ,:album_id => @album.id),
+                                    method: :delete, data: { confirm: 'Are you sure?' } ,class:"btn btn-danger  mt-2"%>   
+                          <% end %>
+                        </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>   
+      </section>
+    <%end%>
+    <%end%>
+   <% if artist_signed_in? %>
+  <% if !(@album.songs.present?)%>
+    <div class="container-fluid  mt-100">
+            <div class="row">
+            
+              <div class="col-md-12">
+              
+                  <div class="card">
+                <div class="card-header">
+                </div>
+                <div class="card-body cart">
+                    <div class="col-sm-12 empty-cart-cls text-center">
+                      <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2?v=v2" width="130" height="130" class="img-fluid mb-4 mr-3">
+                      <h3><strong>Your Album is Empty</strong></h3>
+                      <h4>Add something</h4>
+                      <%= link_to 'Add new song',songs_path(album_id: @album.id),class:"btn btn-primary btn-sm text-decoration-none" %>           
+                    </div>
+                </div>
+            </div>
+    </div>
+  <%end%>
+  <%end%>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>

@@ -1,33 +1,58 @@
-<p id="notice"><%= notice %></p>
+<%= render partial: "layouts/display" %>
 
-<h1>Songs</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Album</th>
-      <th>Duration</th>
-      <th>Lyrics</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @songs.each do |song| %>
-      <tr>
-        <td><%= song.title %></td>
-        <td><%= song.album_id %></td>
-        <td><%= song.duration %></td>
-        <td><%= song.lyrics %></td>
-        <td><%= link_to 'Show', song %></td>
-        <td><%= link_to 'Edit', edit_song_path(song) %></td>
-        <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+  <%if user_signed_in?%>
+    <div class="row mx-auto" >
+     <% @songs.each do |song| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <img class="card-img-top" src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= song.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Duration: <%= song.duration %></p>
+          <div class="center aligned ui container text-center">
+            <% if current_user.playlists.present?%>
+              <%= form_with url: insert_playlists_path , local: true do |form| %>
+              <%= hidden_field_tag :song_id, song.id %>
+              <%= hidden_field_tag :user_id, current_user.id %>
+               <%= form.select(:playlist_id, current_user.playlists.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
+                <br>
+                <br>
+                <%= form.submit "Add to playlist ",class:"btn btn-primary" %>
+              <% end %>
+              <br>
+            <%end%>
+          </div>
+          <%= link_to 'Show', song_path(song),class:"btn btn-primary text-decoration-none " %><br>
+        
+          
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
+  <%else%>
+  <div class="row mx-auto" >
+     <% @songs.each do |song| %>
+     <div class="col-sm-4">
+      <div class="card" style="width: 100%;">
+        <img class="card-img-top" src="https://www.newstatesman.com/wp-content/uploads/sites/2/2021/11/GettyImages-1197828995-1038x778.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center font-weight-bold text-info">Title: <%= song.title %></h5>
+          <p class="card-text text-center text-danger font-italic">Duration: <%= song.duration %></p>
+          
+          <%= link_to 'Show',song_path(song),class:"btn btn-primary btn-sm text-decoration-none"%>
+        <%= link_to 'Update',edit_song_path(song,:album_id=>params[:album_id]),class:"btn btn-primary btn-sm text-decoration-none",style:"margin-left:390px;"%>
+        <%= button_to 'Remove',song_path(song,:album_id=>params[:album_id]),method: :delete,data: { confirm: 'Are you sure?'},class:"btn btn-danger btn-sm",style:"margin-left:230px;"%>
+        
+          
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
 <br>
-
-<%= link_to 'New Song', new_song_path %>
+  <%= link_to "Add new song", new_song_path(:artist_id=>params[:artist_id],:album_id=>params[:album_id]),class:"btn btn-success text-decoration-none",style:"margin-left:750px;width:300px" %>
+ 
+<%end %>

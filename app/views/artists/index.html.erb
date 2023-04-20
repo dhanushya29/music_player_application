@@ -1,3 +1,4 @@
+<%= render 'layouts/display' %>
 <p id="notice"><%= notice %></p>
 
 <h1>Artists</h1>
@@ -16,7 +17,7 @@
     <% @artists.each do |artist| %>
       <tr>
         <td><%= artist.name %></td>
-        <td><%= artist.image_url %></td>
+        <td><%= image_tag artist.image_url.to_s ,alt:'image' ,:size => "100x100" %></td>
         <td><%= artist.region %></td>
         <td><%= link_to 'Show', artist %></td>
         <td><%= link_to 'Edit', edit_artist_path(artist) %></td>
@@ -28,4 +29,4 @@
 
 <br>
 
-<%= link_to 'New Artist', new_artist_path %>
+

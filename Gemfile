@@ -28,9 +28,12 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -53,3 +56,10 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise','~>4.7.3'
+gem 'devise-bootstrap-views', '~> 1.0'
+gem 'activeadmin'
+gem 'faker'
+gem 'rails-controller-testing'
+gem 'doorkeeper','~> 5.4.0'
+gem 'will_paginate'
+gem 'bulma-rails','~> 0.6.1'

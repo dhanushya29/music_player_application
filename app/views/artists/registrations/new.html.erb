@@ -1,0 +1,75 @@
+<%= render 'layouts/display' %>
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://wallpaperaccess.com/full/1162901.jpg"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+            <p class="lead fw-normal mb-0 me-3 text-primary"style="margin-left:130px;">Sign up</p>
+          </div>
+          <!-- Email input -->
+           <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+           <%= bootstrap_devise_error_messages! %>
+          <div class="form-outline mb-4">
+              <div class="form-group">
+                <%= f.label :email %>
+                <%= f.email_field :email, autofocus: true, autocomplete: 'email', placeholder: "Enter email" ,class: 'form-control form-control-lg' %>
+              </div>
+          </div>
+          
+          <div class="form-outline mb-4">
+              <div class="form-group">
+                <%= f.label :name %>
+                <%= f.text_field :name, autofocus: true, autocomplete: 'name', class: 'form-control', placeholder: "Enter Name" %>
+              </div>
+            </div>
+
+            <div class="form-outline mb-4">
+              <div class="form-group">
+                <%= f.label :image_url %>
+                <%= f.text_field :image_url, autofocus: true, autocomplete: 'image_url', class: 'form-control', placeholder: "Enter image_url" %>
+              </div>
+            </div>
+
+            <div class="form-outline mb-4">
+              <div class="form-group">
+                <%= f.label :region %>
+                <%= f.text_field :region, autofocus: true, autocomplete: 'region', class: 'form-control' , placeholder: "Enter region"%>
+              </div>
+            </div>
+
+            <div class="form-outline mb-4">
+                <div class="form-group">
+                  <%= f.label :password %>
+                  <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control' , placeholder: "Enter password"%>
+
+                  <% if @minimum_password_length %>
+                    <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+                  <% end %>
+                </div>
+              </div>
+              
+              <div class="form-outline mb-4">
+                <div class="form-group">
+                  <%= f.label :password_confirmation %>
+                  <%= f.password_field :password_confirmation, autocomplete: 'current-password', class: 'form-control' , placeholder: "Enter password confirmation" %>
+                </div>
+              </div>
+
+
+                <div class="actions">
+                  <%= f.submit "Sign up" %>
+                </div>
+          <%end%>
+          <%= render 'artists/shared/links' %>
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+</section>
+

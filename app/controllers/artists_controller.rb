@@ -1,13 +1,14 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: %i[ show edit update destroy ]
-
-  # GET /artists or /artists.json
+  before_action :authenticate_artist!
+  
   def index
     @artists = Artist.all
   end
 
   # GET /artists/1 or /artists/1.json
   def show
+    @image=@artist.image 
   end
 
   # GET /artists/new
@@ -22,14 +23,12 @@ class ArtistsController < ApplicationController
   # POST /artists or /artists.json
   def create
     @artist = Artist.new(artist_params)
-
+    @artist.create_image(params[:image_url])
     respond_to do |format|
       if @artist.save
-        format.html { redirect_to artist_url(@artist), notice: "Artist was successfully created." }
-        format.json { render :show, status: :created, location: @artist }
+        redirect_to root_path 
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @artist.errors, status: :unprocessable_entity }
+        render 'new'
       end
     end
   end
