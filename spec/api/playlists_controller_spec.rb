@@ -6,6 +6,8 @@ RSpec.describe "Playlists",type: :request do
 	let(:artist_token) {create(:doorkeeper_access_token,resource_owner_id: artist.id)}
 	let(:user_token) {create(:doorkeeper_access_token,resource_owner_id: user.id)}
 	describe "GET /api/v1/playlists" do 
+
+		let!(:playlist){create(:playlist,user:user)}
 		it "should need access token " do 
 			get '/api/v1/playlists'
 			expect(response).to have_http_status(:unauthorized)
@@ -13,7 +15,7 @@ RSpec.describe "Playlists",type: :request do
 
 		it "should return all playlists" do 
 			get  '/api/v1/playlists',params: {access_token:user_token.token}
-			expect(response).to have_http_status(:ok)
+			expect(JSON.parse(response.body)["Playlists"]).to eq([playlist.as_json.stringify_keys])
 		end 
 	end 
 
@@ -43,10 +45,6 @@ RSpec.describe "Playlists",type: :request do
 	describe "GET #show" do 
     	let(:token) {instance_double('Doorkeeper::AccessToken')}
 
-    	before do 
-    		allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
-    	end 
-
         let(:artist){create(:artist)}
         let(:artist_token) {create(:doorkeeper_access_token,resource_owner_id: artist.id)}
         
@@ -56,7 +54,7 @@ RSpec.describe "Playlists",type: :request do
 
         it "assigns the requested playlist to playlists" do 
         	get api_v1_playlist_path(playlist),params: {id:playlist.id,access_token:user_token.token}
-            expect(response).to have_http_status(:ok)
+            expect(JSON.parse(response.body)["playlist"]).eql?(playlist)
         end 
 
         it "assigns the current playlist's image to images" do 
@@ -73,10 +71,6 @@ RSpec.describe "Playlists",type: :request do
 
     describe '#insert' do 
     	let(:token) {instance_double('Doorkeeper::AccessToken')}
-
-    	before do 
-    		allow_any_instance_of(Api::V1::PlaylistsController).to receive(:doorkeeper_authorize!).and_return(true)
-    	end 
 
     	let(:user){create(:user)}
     	let(:artist){create(:artist)}

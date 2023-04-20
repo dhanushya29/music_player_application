@@ -4,11 +4,10 @@ RSpec.describe "Artist",type: :request do
     
 	describe "GET #new" do 
 		let(:token) {instance_double('Doorkeeper::AccessToken')}
-
-		before do 
-			allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
-		end 
-
+        
+        before do 
+        	allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
+        end
 		let!(:artist){Artist.new}
 		before{get api_v1_artists_path}
 		it "assigns a new artist to artists" do 
@@ -25,8 +24,8 @@ RSpec.describe "Artist",type: :request do
         let(:artist){create(:artist)}
         let(:artist_token){create(:doorkeeper_access_token,resource_owner_id: artist.id)} 
         before do 
-			allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
-		end 
+        	allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
+        end
 		context "with valid params" do 
 
 			it "creates a new artist" do 
@@ -54,40 +53,31 @@ RSpec.describe "Artist",type: :request do
     describe "GET #show" do 
     	let(:token) {instance_double('Doorkeeper::AccessToken')}
 
-    	before do 
-    		allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
-    	end 
-
         let(:artist){create(:artist)}
         let(:image){create(:image,imageable:artist)}
-
+        let(:artist_token){create(:doorkeeper_access_token,resource_owner_id: artist.id)}
         it "assigns the requested artist to artist" do 
-        	get api_v1_artist_path(artist),params: {id:artist.id}
+        	get api_v1_artist_path(artist),params: {id:artist.id,access_token:artist_token.token}
             expect(JSON.parse(response.body)["artist"]).eql?(artist)
         end 
 
         it "assigns the current artist's image to images" do 
-        	get api_v1_artist_path(artist),params:{id:artist.id}
+        	get api_v1_artist_path(artist),params:{id:artist.id,access_token:artist_token.token}
         	expect(JSON.parse(response.body)["artist"]).eql?(artist)
         end 
 
         it "renders the show template" do 
-        	get api_v1_artist_path(artist),params:{id:artist.id}
+        	get api_v1_artist_path(artist),params:{id:artist.id,access_token:artist_token.token}
         	expect(response).to have_http_status(:ok)
         end 
     end 
 
     describe "GET #index" do 
     	let(:token) {instance_double('Doorkeeper::AccessToken')}
-
-    	before do 
-    		allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
-    	end 
-
     	let!(:artist){create(:artist)}
-        
+        let(:artist_token){create(:doorkeeper_access_token,resource_owner_id: artist.id)}
         it "assigns all artists as @artists" do 
-        	get api_v1_artists_path
+        	get api_v1_artists_path,params:{access_token:artist_token.token}
         	expect(response).to have_http_status(200)
         end 
     end

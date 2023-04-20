@@ -6,6 +6,7 @@ RSpec.describe "Songs",type: :request do
 	let(:artist_token) {create(:doorkeeper_access_token,resource_owner_id: artist.id)}
 	let(:user_token) {create(:doorkeeper_access_token,resource_owner_id: user.id)}
 	describe "GET /api/v1/songs" do 
+		let!(:song){create(:song,artist:artist)}
 		it "should need access token " do 
 			get '/api/v1/songs'
 			expect(response).to have_http_status(:unauthorized)
@@ -13,12 +14,12 @@ RSpec.describe "Songs",type: :request do
 
 		it "should return all songs of artist" do 
 			get '/api/v1/songs',params: {access_token:artist_token.token}
-			expect(response).to have_http_status(200)
+			expect(JSON.parse(response.body)['Songs']).to eq([song.as_json.stringify_keys])
 		end
 
 		it "should return all songs" do 
 			get  '/api/v1/songs',params: {access_token:user_token.token}
-			expect(response).to have_http_status(:ok)
+			expect(JSON.parse(response.body)['Songs']).to eq([song.as_json.stringify_keys])
 		end 
 	end 
 
@@ -47,10 +48,6 @@ RSpec.describe "Songs",type: :request do
 	describe "GET #show" do 
     	let(:token) {instance_double('Doorkeeper::AccessToken')}
 
-    	before do 
-    		allow_any_instance_of(Api::V1::ArtistsController).to receive(:doorkeeper_authorize!).and_return(true)
-    	end 
-
         let(:artist){create(:artist)}
         let(:artist_token) {create(:doorkeeper_access_token,resource_owner_id: artist.id)}
         let(:user){create(:user)}
@@ -58,7 +55,7 @@ RSpec.describe "Songs",type: :request do
 
         it "assigns the requested song to songs" do 
         	get api_v1_song_path(song),params: {id:song.id,access_token:artist_token.token}
-            expect(response).to have_http_status(:ok)
+            expect(JSON.parse(response.body)["song"]).eql?(song)
         end 
 
         it "renders the show template" do 
@@ -66,4 +63,41 @@ RSpec.describe "Songs",type: :request do
         	expect(response).to have_http_status(:ok)
         end 
     end   
+
+    describe "PUT#update" do 
+    	it "requires authentication" do 
+    		put api_v1_song_path(song),params:{id:song.id}
+    		expect(response).to have_http_status(:unauthorized)
+    	end 
+
+        let(:token) {instance_double('Doorkeeper::AccessToken')}
+    	let(:artist){create(:artist)}
+        let(:artist_token) {create(:doorkeeper_access_token,resource_owner_id: artist.id)}
+        let(:image){create(:image,imageable:album)}
+        let(:user){create(:user)}
+        let(:song){create(:song,artist:artist)}
+
+        it "updates a particular album" do 
+        	put api_v1_song_path(song),params:{id:song.id,access_token:artist_token.token,title:"Good"}
+        	expect(JSON.parse(response.body)["album"]).eql?(song)
+        end
+    end 
+
+
+    describe "DELETE #destroy" do 
+    	it "requires authentication" do 
+    		delete api_v1_song_path(song),params:{id:song.id}
+    		expect(response).to have_http_status(:unauthorized)
+    	end 
+
+    	let(:token) {instance_double('Doorkeeper::AccessToken')}
+    	let(:artist){create(:artist)}
+        let(:artist_token) {create(:doorkeeper_access_token,resource_owner_id: artist.id)}
+        let(:song){create(:song,artist:artist)}
+
+        it "deletes song" do 
+        	delete api_v1_song_path(song),params:{id:song.id,access_token:artist_token.token}
+        	expect(response).to have_http_status(200)
+        end 
+    end
 end

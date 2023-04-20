@@ -45,10 +45,10 @@ class Api::V1::AlbumsController < Api::V1::ApiController
           render json: {message:"Album not updated"}
         end
       else
-        render json: {message:"unauthorized"},status: :unauthorized
+        render json: {error:"You are not allowed to create"},status: 403
       end
     else
-      render json:{message:"unauthorized"},status: :unauthorized
+      render json:{error:"unauthorized"},status: :unauthorized
     end
   end
 
